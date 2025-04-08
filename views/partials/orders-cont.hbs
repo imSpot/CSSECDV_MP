@@ -1,0 +1,68 @@
+<link rel="stylesheet" href="public/css/orders.css">
+
+<div class="orders-container">
+  <h1>Movie Orders</h1>
+  
+  <div class="order-form">
+    <h2>Place New Order</h2>
+    <select id="movieSelect" class="form-control">
+      <option value="">Select a Movie</option>
+      <!-- Movies will be populated dynamically -->
+    </select>
+    <button onclick="placeOrder()" class="btn-order">Place Order</button>
+  </div>
+
+  <div class="order-list">
+    <h2>Your Current Order</h2>
+    <div id="currentOrder"></div>
+  </div>
+</div>
+
+<script>
+  // Load available movies
+  window.onload = async () => {
+    const response = await fetch('/getRows?table=movies');
+    const movies = await response.json();
+    const select = document.getElementById('movieSelect');
+    
+    movies.forEach(movie => {
+      const option = document.createElement('option');
+      option.value = movie.id;
+      option.textContent = movie.title;
+      select.appendChild(option);
+    });
+
+    loadCurrentOrder();
+  };
+
+  async function placeOrder() {
+    const movieId = document.getElementById('movieSelect').value;
+    if (!movieId) return alert('Please select a movie');
+
+    const response = await fetch('/place-order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ movieId })
+    });
+
+    const result = await response.json();
+    alert(result.message);
+    if (result.success) loadCurrentOrder();
+  }
+
+  async function loadCurrentOrder() {
+    const response = await fetch('/user-orders');
+    const { orders } = await response.json();
+    const orderContainer = document.getElementById('currentOrder');
+    
+    orderContainer.innerHTML = orders.length > 0 
+      ? orders.map(order => `
+          <div class="order-item">
+            <img src="${order.poster}" alt="${order.title}">
+            <h3>${order.title}</h3>
+            <p>Ordered on: ${new Date(order.orderDate).toLocaleDateString()}</p>
+          </div>
+        `).join('')
+      : '<p>No active orders</p>';
+  }
+</script>

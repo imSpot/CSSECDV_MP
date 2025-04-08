@@ -88,19 +88,6 @@ app.get('/get-about-us', (req, res) => {
 
 app.get('/admin', (req, res) => {
   if (req.session.isAdmin) {
-    /*fs.readFile(filePath, 'utf8', (err, data) => {
-      if (err) {
-        console.error('Error reading file:', err);
-        res.status(500).render('handling', {
-          title: 'Error',
-          body: 'Error reading About Us file.'
-        });
-      } else {
-        const text = data.toString();
-        res.render('admin', { content: data, text: text });
-      }
-    });*/
-
     res.render('admin');
   } else {
     res.status(401).render('handling', {
@@ -212,34 +199,10 @@ app.get('/add-account', async (req, res) => {
   } else {
     res.status(401).render('handling', { title: 'Unauthorized Access', body: 'You are not authorized to access this page.' });
   }
-  //res.render('add-account'); 
 });
 
 // Route to render edit-account form
 app.get('/edit-account/:id', async (req, res) => {
-  /*if(req.session.isAdmin) {
-    const userId = req.params.id;
-    try {
-      // Fetch user data from the database
-      const user = await database.getUserById(userId);
-
-      if (user) {
-          // Render the edit-account template with the user data
-          res.render('edit-account', {
-              id: user.id,
-              firstName: user.firstName,
-              lastName: user.lastName,
-              emailAddress: user.emailAddress,
-              isAdmin: user.isAdmin
-          });
-      } else {
-          res.status(404).send('User not found');
-      }
-    } catch (error) {
-        console.error('Error fetching user data:', error);
-        res.status(500).send('Error fetching user data');
-    }
-  }*/
   if(req.session.isAdmin) {
   const userId = req.params.id;
     try {
@@ -265,6 +228,55 @@ app.get('/edit-account/:id', async (req, res) => {
   } else {
     res.status(401).render('handling', { title: 'Unauthorized Access', body: 'You are not authorized to access this page.' });
   }
+});
+
+app.get('/browse', async (req, res) => {
+  res.render('browse')
+});
+
+app.get('/orders' , async (req, res) => {
+  res.render('orders')
+});
+
+// Add to app.js
+app.post('/place-order', async (req, res) => {
+  try {
+    const userId = req.session.userId;
+    const { movieId } = req.body;
+
+    // Basic validation
+    if (!userId) return res.status(401).json({ success: false, message: 'Authentication required' });
+    if (!movieId) return res.status(400).json({ success: false, message: 'Movie selection required' });
+
+    // Check existing orders
+    const existingOrder = await database.getOrdersByUserId(userId);
+    if (existingOrder.length > 0) {
+      return res.status(400).json({ success: false, message: 'You can only have one order' });
+    }
+
+    await database.createOrder(userId, movieId);
+    res.json({ success: true, message: 'Order placed successfully' });
+  } catch (error) {
+    console.error('Order error:', error);
+    res.status(500).json({ success: false, message: 'Order failed' });
+  }
+});
+
+app.get('/user-orders', async (req, res) => {
+  try {
+    const userId = req.session.userId;
+    if (!userId) return res.status(401).json({ success: false, message: 'Authentication required' });
+    
+    const orders = await database.getOrdersByUserId(userId);
+    res.json({ success: true, orders });
+  } catch (error) {
+    console.error('Order fetch error:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch orders' });
+  }
+});
+
+app.get('/blog' , async (req, res) => {
+  res.render('blog')
 });
 
 app.get('/about-us', (req, res) => {
@@ -307,3 +319,4 @@ app.use((req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`)
 })
+
