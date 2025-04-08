@@ -1,0 +1,215 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+body {
+    margin: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    background-color: rgb(0, 0, 0);
+}
+
+.content {
+    padding: 60px;
+    max-width: 600px;
+    margin: auto;
+}
+
+.parent-row header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+}
+
+.acctInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    text-align: center;
+    margin-top: 110px;
+    margin-bottom: 30px;
+    padding: 20px;
+    width: 450px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    background-color:rgba(28, 22, 46, 0.856);
+    border: 1px solid black;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+}
+
+h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 30px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+}
+
+.input label {
+    font-weight: bold;
+    margin-right: 10px;
+    align-items: center;
+}
+
+.emailAddress > .input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.emailAddress > .input input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid black;
+    width: 20vw;
+}
+
+.firstName > .input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.firstName > .input input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid black;
+    width: 20vw;
+}
+
+.lastName > .input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.lastName > .input input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid black;
+    width: 20vw;
+}
+
+.password > .input {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.password > .input input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid black;
+    width: 20vw;
+}
+
+.confirmPassword > .input {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.confirmPassword > .input input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid black;
+    width: 20vw;
+    margin-left: 21px;
+}
+
+/* .confirmPassword > .input {
+    position: relative;
+} */
+
+.show-password i {
+    position: relative;
+    right: 35px;
+    transform: translateY(5%);
+    cursor: pointer;
+    font-size: 20px;
+    color: #333;
+    transition: color 0.3s ease-in-out;
+}
+
+.show-password i:hover {
+    color: rgb(201, 14, 14);
+}
+
+/*For add user*/
+.type > .drop-down {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.type > .drop-down select {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid black;
+    width: 21.1vw;
+}
+
+.makeAdmin {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center ;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 8px;
+}
+
+.makeAdmin > .switch {
+    margin-right: 10px;
+}
+
+.saveEdits > .button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.saveEdits > .button input, .saveEdits > .button button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid black;
+    width: 45%;
+    background-color: rgb(201 14 14);
+    color: white;
+    cursor: pointer;
+}
+
+.saveEdits > .button input:hover, .saveEdits > .button button:hover  {
+    background-color: #0056b3;
+}

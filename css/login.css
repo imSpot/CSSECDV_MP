@@ -1,0 +1,136 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#login-form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding: 20px;
+    height: 350px;
+    width: 35vw;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    background-color:rgba(28, 22, 46, 0.856);
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+/* .middle-cont {
+    
+    align-items: center;
+    justify-content: center;
+} */
+
+.options {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+#remember-me > .input {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 5px;
+}
+
+#forgot-password > .input a {
+    padding: 8px;
+    cursor: pointer;
+    color: white;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+#forgot-password > .input a:hover {
+    color: rgb(201, 14, 14);
+}
+
+h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 30px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+}
+
+#email > .input input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid black;
+    width: 30vw;
+}
+
+#password > .input input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid black;
+    width: 30vw;
+}
+
+#password > .input {
+    position: relative;
+}
+
+.show-password i {
+    position: absolute;
+    right: 15px;
+    transform: translateY(90%);
+    cursor: pointer;
+    font-size: 20px;
+    color: rgb(201, 14, 14);
+    transition: color 0.3s ease-in-out;
+}
+  
+.show-password i:hover {
+    color: #007bff;
+}
+
+#buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid black;
+    width: 17vw;
+    background-color: rgb(201, 14, 14);
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+
+.buttons:hover {
+    background-color: #0056b3;
+}
