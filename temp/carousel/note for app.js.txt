@@ -1,0 +1,22 @@
+part of the code edited in app.js to read the carousel.json file:
+
+app.use(express.static(__dirname));
+
+fs.readFile('carousel.json', (err, data) => {
+  if (err) {
+    console.error(err);
+    return;
+  }
+
+  const imageData = JSON.parse(data);
+
+  app.get('/admin', (req, res) => {
+    res.render('main', { images: imageData  })
+  })
+});
+
+can change app.get from admin to main
+
+both the carousel.js and carousel.json were in the same folder as app.js
+
+dont forget to add {{> carousel}} for hbs

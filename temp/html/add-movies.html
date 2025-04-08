@@ -1,0 +1,120 @@
+<html>
+    <head>
+        <title>Add Movie</title>
+        <link rel="stylesheet" type="text/css" href="../public/css/add-movies.css">
+    </head>
+    <body>
+        <script src="static/js/account.js" defer></script>
+        <div class="parent-row header">
+            <div class="header-logo">
+                <img src="../public/eduksine-logo.png"/>
+            </div>
+        </div>
+         <div class="addMovieForm">
+            <div class="FilmTitle">
+                <div class="input">
+                    <label for="FilmTitle">Title: </label>
+                    <input type="text" name="FilmTitle" id="FilmTitle" placeholder="Movie Title">
+                </div>
+            </div>
+            <div class="FilmPoster">
+                <div class="input">
+                    <label for="FilmPoster">Poster: </label>
+                    <input type="file" name="FilmPoster" id="FilmPoster" id="FilmPoster" accept="image/png, image/jpeg">
+                </div>
+            </div>
+            <div class="FilmRuntime">
+                <div class="input">
+                    <label for="FilmRuntime">Runtime: </label>
+                    <input type="number" name="FilmRuntime" id="FilmRuntime" placeholder="Minutes">
+                </div>
+            </div>
+            <div class="FilmDescription">
+                <div class="input">
+                    <label for="FilmDescription">Description: </label>
+                    <input type="text" name="FilmDescription" id="FilmDescription" placeholder="Movie Description">
+                </div>
+            </div>
+            <div class="FilmYear">
+                <div class="input">
+                    <label for="FilmYear">Year: </label>
+                    <input type="number" name="FilmYear" id="FilmYear" placeholder="Year the Film Aired">
+                </div>
+            </div>
+            <div class="FilmDirector">
+                <div class="input">
+                    <label for="FilmDirector">Director/s: </label>
+                    <input type="text" name="FilmDirector" id="FilmDirector" placeholder="Film Director/s">
+                    <div class="addDir">
+                        <div class="button">
+                            <input type="Button" name="addDir" id="addDire" value="Add">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="FilmCast">
+                <div class="input">
+                    <label for="FilmCast">Cast: </label>
+                    <input type="text" name="FilmCast" id="FilmCast" placeholder="Movie Cast">
+                    <div class="addCast">
+                        <div class="button">
+                            <input type="Button" name="addCast" id="addCast" value="Add">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="Category">
+                <div class="input">
+                    <div class="select">
+                        <label for="Category">Category: </label>
+                        <select name="Category" id="Category">
+                            <option>Agriculture</option>
+                            <option>Arts, Cuture,and Literature</option>
+                            <option>Career Development</option>
+                            <option>Children's Educational Films</option>
+                            <option>Climate Change</option>
+                            <option>Comedy</option>
+                            <option>Coming of Age</option>
+                            <option>Culture and Literature</option>
+                            <option>Disasters</option>
+                            <option>Drugs</option>
+                            <option>Education and Values Formation</option>
+                            <option>Environment</option>
+                            <option>Filipino Sign Language Films</option>
+                            <option>Gender and Development</option>
+                            <option>Health and Welness</option>
+                            <option>History</option>
+                            <option>HIV and Sex Education</option>
+                            <option>Indigenous Culture</option>
+                            <option>Law and Governance</option>
+                            <option>LGBT Rights</option>
+                            <option>Martial Law</option>
+                            <option>Media Education</option>
+                            <option>Mental Health</option>
+                            <option>Peace and Justice</option>
+                            <option>Philippine History</option>
+                            <option>Political and Social Issues</option>
+                            <option>Romance</option>
+                            <option>Science and Technology</option>
+                            <option>Spirituality</option>
+                            <option>Sustainability and Environment</option>
+                            <option>VAWC</option>
+                            <option>Women Empowerment</option>
+                        </select>
+                    </div>
+                    <div class="addCat">
+                        <div class="button">
+                            <input type="Button" name="addCat" id="addCat" value="Add">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="addMov">
+                <div class="button">
+                    <input type="submit" name="addMov" id="addMov" value="Save">
+                </div>
+            </div>
+         </div>
+     </body>
+</html>
+

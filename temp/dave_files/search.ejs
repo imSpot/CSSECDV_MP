@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Movies</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        form { margin: 20px; position: relative; }
+        input[type="text"] { width: 300px; padding: 10px; margin-right: 10px; }
+        input[type="submit"] { padding: 10px 20px; }
+        ul { list-style-type: none; padding: 0; }
+        li { margin-bottom: 20px; }
+        .dropdown { position: absolute; top: 40px; left: 0; width: 300px; background: #fff; border: 1px solid #ccc; display: none; z-index: 1000; }
+        .dropdown ul { max-height: 150px; overflow-y: auto; }
+        .dropdown ul li { padding: 10px; cursor: pointer; }
+        .dropdown ul li:hover { background-color: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <h1>Search Movies</h1>
+    <form action="/search" method="GET">
+        <input type="text" name="title" placeholder="Enter movie title" id="search-box" autocomplete="off" required>
+        <input type="submit" value="Search">
+        <div class="dropdown" id="search-dropdown">
+            <ul id="previous-searches">
+                <% previousSearches.forEach(search => { %>
+                    <li onclick="selectSearch('<%= search %>')"><%= search %></li>
+                <% }) %>
+            </ul>
+        </div>
+    </form>
+
+    <% if (movies && movies.length > 0) { %>
+        <h2>Search Results:</h2>
+        <ul>
+            <% movies.forEach(movie => { %>
+                <li>
+                    <h2><%= movie.title %> (<%= movie.year %>)</h2>
+                    <p><strong>Runtime:</strong> <%= movie.runtime %> minutes</p>
+                    <p><strong>Description:</strong> <%= movie.descriptions %></p>
+                    <p><strong>Director:</strong> <%= movie.directors %></p>
+                    <p><strong>Cast:</strong> <%= movie.casts %></p>
+                    <p><strong>Category:</strong> <%= movie.category %></p>
+                </li>
+            <% }) %>
+        </ul>
+    <% } else if (movies) { %>
+        <p>No movies found.</p>
+    <% } %>
+
+    <script>
+        document.getElementById('search-box').addEventListener('focus', function() {
+            document.getElementById('search-dropdown').style.display = 'block';
+        });
+
+        document.getElementById('search-box').addEventListener('blur', function() {
+            setTimeout(function() {
+                document.getElementById('search-dropdown').style.display = 'none';
+            }, 200);
+        });
+
+        function selectSearch(search) {
+            document.getElementById('search-box').value = search;
+            document.getElementById('search-dropdown').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

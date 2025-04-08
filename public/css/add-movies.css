@@ -1,0 +1,332 @@
+/*@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+body {
+    margin: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    background-color: rgb(0, 0, 0);
+}
+
+.parent-row header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+}
+
+.addMovieForm {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    padding: 20px;
+    width: 450px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    background-color:rgba(28, 22, 46, 0.856);
+    border: 1px solid black;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+
+}
+
+.input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 5px;
+    justify-content: space-between;
+}   
+
+.input label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.FilmTitle > .input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.FilmTitle > .input input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid black;
+    background-color: rgb(255, 255, 255);
+    width: 74.5%;
+}
+
+.FilmPoster > .input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.FilmPoster > .input input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 6px;
+    border-radius: 10px;
+    border: 1px solid black;
+    background-color: rgb(255, 255, 255);
+    width: 74.5%;
+}
+
+.FilmRuntime > .input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.FilmRuntime > .input input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid black;
+    background-color: rgb(255, 255, 255);
+    width: 74.5%;
+}
+
+.FilmDescription > .input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.FilmDescription > .input input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid black;
+    background-color: rgb(255, 255, 255);
+    width: 75%;
+}
+
+.FilmYear > .input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.FilmYear > .input input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid black;
+    background-color: rgb(255, 255, 255);
+    width: 74.5%;
+}
+
+.FilmDirector > .input input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 14px;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid black;
+    background-color: rgb(255, 255, 255);
+    width: 75%;
+}
+
+.addDir > .button {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100px;
+}
+
+.addDir > .button input {
+    margin: 10px;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid black;
+    background-color: rgb(201 14 14);
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+}
+
+.FilmCast > .input input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 58px;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid black;
+    background-color: rgb(255, 255, 255);
+    width: 74.5%;
+}
+
+.addCast > .button {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100px;
+}
+
+.addCast > .button input {
+    margin: 10px;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid black;
+    background-color: rgb(201 14 14);
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+}
+
+.Category > .input input {
+    width: 74.5%;
+}
+
+.Category > .input > .select {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+}
+
+.addCat > .button {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100px;
+}
+
+.addCat > .button input {
+    margin: 10px;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid black;
+    background-color: rgb(201 14 14);
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+}
+
+.addMov > .button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.addMov > .button input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid black;
+    width: 50%;
+    background-color: rgb(201 14 14);
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+}*/
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: black;
+    color: white;
+    margin: 0;
+
+    margin: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    background-color: rgb(0, 0, 0);
+    
+}
+
+.parent-row header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    text-align: center;
+    margin-top: 110px;
+    margin-bottom: 30px;
+    padding: 20px;
+    width: 450px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    background-color:rgba(28, 22, 46, 0.856);
+    border: 1px solid black;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    top: 100px;
+}
+
+label, input, textarea, button {
+    margin-bottom: 15px;
+}
+
+input, textarea, button {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #333;
+    background-color: #222;
+    color: white;
+}
+
+button {
+    background-color: #6200ea;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #3700b3;
+}
+
+.active-button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    width: 100px;
+    margin: auto;
+}
+.active {
+    background-color: green;
+}
+.inactive {
+    background-color: red;
+}

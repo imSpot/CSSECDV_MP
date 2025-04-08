@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Movie</title>
+    <link rel="stylesheet" type="text/css" href="../css/add-movies.css" />
+    {{>admin-header}}
+</head>
+<body>
+    <div class="content">
+        <h2>Edit a Movie</h2>
+        
+        <form id="edit-movie-form" action="/edit-movie" method="POST" enctype="multipart/form-data">
+            <input type="hidden" id="id" name="id" value="{{movie.id}}">
+            <input type="hidden" id="isActive" name="isActive" value="{{movie.isActive}}">
+            <input type="hidden" id="current-poster" name="currentPoster" value="{{movie.poster}}">
+            <input type="hidden" id="showPoster" name="showPoster" value="{{movie.showPoster}}">
+
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" value="{{movie.title}}" required><br>
+
+            <label for="poster">Poster:</label>
+            <input type="file" id="poster" name="poster" accept="image/jpeg, image/png, image/jpg"><br>
+
+            <label for="runtime">Runtime (minutes):</label>
+            <input type="number" id="runtime" name="runtime" value="{{movie.runtime}}" required><br>
+
+            <label for="descriptions">Description:</label>
+            <textarea id="descriptions" name="descriptions" required>{{movie.descriptions}}</textarea><br>
+
+            <label for="year">Year:</label>
+            <input type="number" id="year" name="year" value="{{movie.year}}" required><br>
+
+            <label for="directors">Directors:</label>
+            <input type="text" id="directors" name="directors" value="{{movie.directors}}" required><br>
+
+            <label for="casts">Casts:</label>
+            <input type="text" id="casts" name="casts" value="{{movie.casts}}" required><br>
+
+            <label for="category">Category:</label>
+            <input type="text" id="category" name="category" value="{{movie.category}}" required><br>
+
+            <label for="status">Status:</label>
+            <button type="button" id="status-button" class="active-button">{{#if movie.isActive}}Active{{else}}Not Active{{/if}}</button><br>
+
+            <label for="carousel">Carousel Poster:</label>
+            <button type="button" id="carousel-button" class="active-button">{{#if movie.showPoster}}Active{{else}}Not Active{{/if}}</button><br>
+
+            <button type="submit">Update Movie</button>
+        </form>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const statusButton = document.getElementById('status-button');
+    const isActiveInput = document.getElementById('isActive');
+    const showPosterInput = document.getElementById('showPoster');
+    const carouselButton = document.getElementById('carousel-button');
+
+    const updateStatusButton = () => {
+        if (isActiveInput.value === 'true' || isActiveInput.value === '1') {
+            statusButton.textContent = 'Active';
+            statusButton.style.backgroundColor = 'green';
+        } 
+        if (isActiveInput.value === 'false' || isActiveInput.value === '0'){
+            statusButton.textContent = 'Not Active';
+            statusButton.style.backgroundColor = 'red';
+        }
+    };
+
+    const updatePosterButton = () => {
+        if (showPosterInput.value === 'true' || showPosterInput.value === '1') {
+            carouselButton.textContent = 'Active';
+            carouselButton.style.backgroundColor = 'green';
+        } 
+        if (showPosterInput.value === 'false' || showPosterInput.value === '0'){
+            carouselButton.textContent = 'Not Active';
+            carouselButton.style.backgroundColor = 'red';
+        }
+    };
+
+    updateStatusButton();
+    updatePosterButton();
+
+    statusButton.onclick = function() {
+        if (isActiveInput.value === 'true' || isActiveInput.value === '1') {
+            isActiveInput.value = 'false';
+        } else {
+            isActiveInput.value = 'true';
+        }
+        updateStatusButton();
+    };
+
+    carouselButton.onclick = function() {
+        if (showPosterInput.value === 'true' || showPosterInput.value === '1') {
+            showPosterInput.value = 'false';
+        } else {
+            showPosterInput.value = 'true';
+        }
+        updatePosterButton();
+    };
+
+        
+
+        const form = document.getElementById('edit-movie-form');
+            form.addEventListener('submit', async function(event) {
+                event.preventDefault();
+
+                // Extract form data
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+
+                // Input validation
+                const title = data.title.trim();
+                const runtime = parseInt(data.runtime.trim(), 10);
+                const descriptions = data.descriptions.trim();
+                const year = parseInt(data.year.trim(), 10);
+                const directors = data.directors.trim();
+                const casts = data.casts.trim();
+                const category = data.category.trim();
+
+                if (!title) {
+                    alert('Title is required.');
+                    return;
+                }
+
+                if (isNaN(runtime) || runtime <= 0) {
+                    alert('Runtime should be a positive number.');
+                    return;
+                }
+
+                if (!descriptions) {
+                    alert('Description is required.');
+                    return;
+                }
+
+                const currentYear = new Date().getFullYear();
+                if (isNaN(year) || year < 1888 || year > currentYear) {
+                    alert(`Year should be a number between 1888 and ${currentYear}.`);
+                    return;
+                }
+
+                if (!directors.match(/^[a-zA-Z\s,]+$/)) {
+                    alert('Directors should only contain letters, spaces, and commas.');
+                    return;
+                }
+
+                if (!casts.match(/^[a-zA-Z\s,]+$/)) {
+                    alert('Casts should only contain letters, spaces, and commas.');
+                    return;
+                }
+
+                if (!category.match(/^[a-zA-Z\s,]+$/)) {
+                    alert('Category should only contain letters, spaces, and commas.');
+                    return;
+                }
+
+                const posterInput = document.getElementById('poster');
+                if (posterInput.files.length > 0) {
+                    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
+                    const fileType = posterInput.files[0].type;
+                    if (!allowedTypes.includes(fileType)) {
+                        alert('Only JPEG, PNG, JPG, and GIF files are allowed for the poster.');
+                        return;
+                    }
+                }
+
+                try {
+                    const response = await fetch(form.action, {
+                        method: form.method,
+                        body: formData
+                    });
+
+                    if (response.ok) {
+                        alert('Movie updated successfully!');
+                        window.location.href = '/admin';
+                    } else {
+                        const errorData = await response.json();
+                        alert(`Error updating movie: ${errorData.message}`);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Error updating movie.');
+                }
+            });
+    });
+</script>
+</body>
+</html>

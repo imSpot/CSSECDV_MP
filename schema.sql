@@ -1,0 +1,161 @@
+DROP DATABASE IF EXISTS `eduksine`;
+CREATE DATABASE `eduksine`;
+USE `eduksine`;
+
+CREATE TABLE users(
+  id                      VARCHAR(36) NOT NULL PRIMARY KEY
+  ,firstName              VARCHAR(30) NOT NULL
+  ,lastName               VARCHAR(30) NOT NULL
+  ,emailAddress           VARCHAR(37) NOT NULL
+  ,password               VARCHAR(60) NOT NULL
+  ,isActive               BIT NOT NULL
+  ,type                   VARCHAR(15) NOT NULL
+  ,currency               VARCHAR(3) NOT NULL
+  ,emailAddressVerifiedAt VARCHAR(19)
+  ,createdAt              VARCHAR(19) NOT NULL
+  ,updatedAt              VARCHAR(19) NOT NULL
+  ,invitationExpiresAt    VARCHAR(30)
+);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('03871760-3426-11ed-8c36-f73bfee9a632','Raphael','Marco','raphael+test+5@eduksine.com','$2b$10$/yE18yIIdHVcqd2SPmWhGuce.bsR4oyivBQlakcTVmsuDajjF3xUO',1,'ORGANIZATION','PHP','2022-09-14 12:09:24','2022-09-14 12:08:59','2022-09-14 12:09:24',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('28fb0130-222b-11ed-b1ca-b38dc32c6f6f','Karen Jane','Salutan','karen@eduksine.com','$2b$10$l27t7kZFo4P34QlHTdj0MeqywNYBnx3tySVNP0BgdCawEURsBysja',0,'ORGANIZATION','PHP',NULL,'2022-08-22 15:00:28','2022-08-22 15:00:28',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('2dd11c20-57a6-11ed-a322-8177aa2a7092','Raphael','Marco','raphael+test+10@eduksine.com','$2b$10$rLmDqv5OpRg2dD9DW1Hy1.PorTRk0N5ycgyWdJ1Df6xi0mnIQSiBu',1,'ORGANIZATION','PHP','2022-10-29 16:25:41','2022-10-29 16:24:36','2022-10-29 16:25:41',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('5047a150-c8b9-11ed-8726-fd9c832d7267','Raph','Marco','raphael+invite-test@eduksine.com','$2b$10$POMyx/JR.PEykzJRjVmN2O5BF6ydDvLQ6.GzXKwPPxTiE3mZJcQcS',1,'PERSONAL','PHP','2023-03-22 13:56:16','2023-03-22 13:56:16','2023-03-22 13:57:00',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('592ec710-2ad2-11ed-936e-c346ca36ea03','Raphael','Marco','raphael+test+2@eduksine.com','$2b$10$gcteincgO9vJ9FGODLEwSejVgxfP9oBG5JMkiBOFFhVg3N4bcLhvW',1,'ORGANIZATION','PHP','2022-09-02 15:18:08','2022-09-02 15:17:25','2022-09-02 15:18:08',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('6eade430-3109-11ed-ac98-cff07e3bfc19','Raph','Marco','raphael+test+6@eduksine.com','$2b$10$orbGRPpNbe/556BkTU3cxOXgbOHWmkQVz1gNvvVt3XDT/PC4L356G',0,'ORGANIZATION','PHP',NULL,'2022-09-10 13:06:50','2022-09-10 13:06:50',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('6f675c70-86b9-11ed-84ba-7ff1c9ef96b7','Raven Gray','Testing','raven5svg@gmail.com','$2b$10$sronna8GfvQY13Kd.FNEo.9pMv0oO.vyt7rWMo2fzTD25ocFsSy3K',1,'ORGANIZATION','PHP','2022-12-28 14:11:09','2022-12-28 14:10:51','2022-12-28 14:11:09',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('748e4af0-2c33-11ed-90a8-99bf91e08b3c','Raph','Marco','raphael+test+3@eduksine.com','$2b$10$DxU.Iry4qNYAKDiJ3c16Muiz7oONI2ZGNffgGtMl6SURNe.GlWkHu',1,'ORGANIZATION','PHP','2022-09-04 09:25:20','2022-09-04 09:25:03','2022-09-04 09:25:20',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('78117f10-1fce-11ed-8bcd-119ea73c134a','Raphael','Test','raphael+test+1@eduksine.com','$2b$10$CZ4UV/Uhg18qlVzzwGfbEOE072YAIR6F/FQLLXd554UJILgEw4YHa',1,'ORGANIZATION','PHP','2022-08-19 14:52:09','2022-08-19 14:51:56','2022-08-19 14:52:09',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('7cbdee20-336c-11ed-8c36-f73bfee9a632','Raphael','Marco','raphael+test+7@eduksine.com','$2b$10$MB95cOyHR9Qh/UGM8ZMiHu59R84Ow6XwcoqHZ1NqkMRjEF3VO8OpS',0,'ORGANIZATION','PHP',NULL,'2022-09-13 14:00:56','2022-09-13 14:00:56',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('85cbde00-c0d9-11ed-8f21-53c4b160f54b','Raphael','Marco','raphael+personal@eduksine.com','$2b$10$5.loLxUI.m50rATtOuQ3Gu74Pon5XlXBmNa7ExGB8Rmq84vjEcEsG',1,'PERSONAL','PHP','2023-03-12 13:26:49','2023-03-12 13:26:40','2023-03-12 13:26:49',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('8b8a6640-2c37-11ed-90a8-99bf91e08b3c','Emman','Casticimo','emman@eduksine.com','$2b$10$fcIipszs2eFW0/NyEgghu..UVuZQHvtHvoj/QZafwJ5bgq42b70VG',1,'ORGANIZATION','PHP','2022-09-04 09:54:41','2022-09-04 09:54:19','2022-09-04 09:54:41',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('8d0d15e0-8f64-11ed-84ba-7ff1c9ef96b7','John','Doe','johndoe@example.com','$2b$10$tErzxmnxr3BSbhxzAZLZge9NEodeS9Tv2ZT0m8by2gmczTBAsjNr.',0,'PERSONAL','PHP',NULL,'2023-01-08 14:55:54','2023-01-08 14:55:54',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('aceac150-2f3d-11ed-90a8-99bf91e08b3c','Raphael','Marco','raphael+test+4@eduksine.com','$2b$10$AuXQsyTNnWEb.h6d7sI6puBrRhjWFfzabRKChQRABOpt9OnE9Q9hS',1,'ORGANIZATION','PHP','2022-09-08 06:16:01','2022-09-08 06:15:46','2022-09-08 06:16:01',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('ae1c5f70-8f64-11ed-84ba-7ff1c9ef96b7','Raphael','Marco','raphael+signup-test-1@eduksine.com','$2b$10$FQNC0vPFWC5pd9/2FpwdYeGjigpu3PxqGn.GVPtiRAQflnAEDagi2',1,'PERSONAL','PHP','2023-01-08 15:07:44','2023-01-08 14:56:50','2023-01-08 15:07:44',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('b2ad7b70-2518-11ed-a273-4743236ef670','Staging','Demo','tester+staging-demo@eduksine.com','$2b$10$fkVwxFNhDgXAO5OZu/g5X.twdhT.NEZ0gr2ZFn0wopiJOEKSHiLcO',1,'ORGANIZATION','PHP','2022-08-26 08:26:07','2022-08-26 08:25:53','2022-08-26 08:26:07',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('c804ab30-9d26-11ec-9565-f3bc5ab9232a','John','Doe','user-test-individual@eduksine.com','$2b$10$fvaEIacXsbgaYXB69wdzpOisF74NSEN7Ydy//NzaxM8vGoE9RtfXG',1,'PERSONAL','PHP','2022-08-13 02:24:46','2022-08-13 02:24:46','2022-08-13 02:24:46',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('c80fcec0-9d26-11ec-9565-f3bc5ab9232a','James','Smith','user-test-organization@eduksine.com','$2b$10$wSDRrP.Dml5745ILFPQU0.5SUMzzC0aiKRJ52xIntlutw/hr8Wvuy',1,'ORGANIZATION','PHP','2022-08-13 02:24:46','2022-08-13 02:24:46','2022-08-13 02:24:46',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('dfa11270-ac5b-11ed-9295-1ba492e77c6d','Jushua Steven','Taduran','taduranjushua2@gmail.com','$2b$10$OXfzqAOV38us8XMD/4Nco.6BQnd4iEqVqi85lkWSnE6aKMvwa4haq',0,'ORGANIZATION','PHP',NULL,'2023-02-14 11:36:51','2023-02-14 11:36:51',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('e5c204a0-ac67-11ed-9295-1ba492e77c6d','Raph','Marco','raphael+test@eduksine.com','$2b$10$eQYLM0agnjlI5F71JKCMAer7zYyH9N/5gELCDtjQv0V1bP4VdxVri',1,'ORGANIZATION','PHP','2023-02-14 13:03:05','2023-02-14 13:02:55','2023-02-14 13:03:05',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('e6c90400-32bb-11ed-b5dc-5f69c822e3a5','Raph 1','Test 1','raphael+marketer-test-1@eduksine.com','$2b$10$XvSvky2JRq0GIr/vz3Km..sy9VuqewAO44w4jeOu6cOuwIhxYXCLW',1,'ORGANIZATION','PHP','2022-09-12 16:56:53','2022-09-12 16:56:53','2022-09-12 18:17:06',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('e70a04a0-32bb-11ed-b5dc-5f69c822e3a5','Raph 2','Test 2','raphael+marketer-test-2@eduksine.com','$2b$10$z1jKFsJfA7GJf33zfEPgbOQ.GQ19B5dkaMxd7Ec/OjGPdBPuw.80u',1,'ORGANIZATION','PHP','2022-09-12 16:56:53','2022-09-12 16:56:53','2022-09-12 16:56:54',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('e74a41f0-32bb-11ed-b5dc-5f69c822e3a5','Raph 3','Test 3','raphael+marketer-test-3@eduksine.com','$2b$10$gLzYh/MdmhA0NwpyhbzNAuQggPQmXDJ8mXAasyOFIX89DMHNjdUr6',1,'ORGANIZATION','PHP','2022-09-12 16:56:54','2022-09-12 16:56:54','2022-09-12 16:56:55',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('e7c42ce0-32bb-11ed-b5dc-5f69c822e3a5','Raph 4','Test 4','raphael+marketer-test-4@eduksine.com','$2b$10$aed4nI7mm2uQ8Q0Qt9iqbe.KY3AhL3mEOTeKskcWQjZJFUPFrHWui',1,'ORGANIZATION','PHP','2022-09-12 16:56:55','2022-09-12 16:56:55','2022-09-12 16:56:55',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('e7ddcf60-32bb-11ed-b5dc-5f69c822e3a5','Raph 5','Test 5','raphael+marketer-test-5@eduksine.com','$2b$10$hLbvunUIRDAayKSNvPeG8eHtH5HxbJPLPkDs8LkkpHzERDtOh7ODu',1,'ORGANIZATION','PHP','2022-09-12 16:56:55','2022-09-12 16:56:55','2022-09-12 16:56:55',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('e7f3c860-32bb-11ed-b5dc-5f69c822e3a5','Raph 6','Test 6','raphael+marketer-test-6@eduksine.com','$2b$10$NnutzE3H78XFFUkWZeqmoeOAC8BsODKEChx9GnRPM5HWMnR9oTHKO',1,'ORGANIZATION','PHP','2022-09-12 16:56:55','2022-09-12 16:56:55','2022-09-12 16:56:55',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('e809e870-32bb-11ed-b5dc-5f69c822e3a5','Raph 7','Test 7','raphael+marketer-test-7@eduksine.com','$2b$10$9orBzifEXvHBpeYlDpG1ieMJInid429jtABtC/PwIYPm.jlqtQApa',1,'ORGANIZATION','PHP','2022-09-12 16:56:55','2022-09-12 16:56:55','2022-09-12 16:56:55',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('e84d8120-32bb-11ed-b5dc-5f69c822e3a5','Raph 8','Test 8','raphael+marketer-test-8@eduksine.com','$2b$10$u4/dgMl5bYaQRfMCsaF.Cu1m30s3kW.lO9PetyJNjuBaBu6GJOzJi',1,'ORGANIZATION','PHP','2022-09-12 16:56:55','2022-09-12 16:56:56','2022-09-12 16:56:56',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('e8bb5e20-32bb-11ed-b5dc-5f69c822e3a5','Raph 9','Test 9','raphael+marketer-test-9@eduksine.com','$2b$10$uJmnMeuXxFB8XYSDsZLvsOMa.1p6IQHYsMhQHoh5p6bB5j3iASAeC',1,'ORGANIZATION','PHP','2022-09-12 16:56:56','2022-09-12 16:56:56','2022-09-12 16:56:57',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('e8ffba20-32bb-11ed-b5dc-5f69c822e3a5','Raph 10','Test 10','raphael+marketer-test-10@eduksine.com','$2b$10$9thbMXuORb6HGvFgs7TBaOFD9QGlhnkMbdsSsf4IgDE8MuvLduZ3C',1,'ORGANIZATION','PHP','2022-09-12 16:56:57','2022-09-12 16:56:57','2022-09-12 16:56:57',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('e939dcf0-32bb-11ed-b5dc-5f69c822e3a5','Raph 11','Test 11','raphael+marketer-test-11@eduksine.com','$2b$10$0FTVASDKPB8faxy3n6/yK.U4KN.ERcwp/JhFgcrPbVgCLrJJ2KHhG',1,'ORGANIZATION','PHP','2022-09-12 16:56:57','2022-09-12 16:56:57','2022-09-12 16:56:57',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('e9700820-32bb-11ed-b5dc-5f69c822e3a5','Raph 12','Test 12','raphael+marketer-test-12@eduksine.com','$2b$10$zfcIC4Nx/z/dn.IaXgFoP.e/suCfFn1Ke755oJF4u/.pFOaVVA9Jq',1,'ORGANIZATION','PHP','2022-09-12 16:56:57','2022-09-12 16:56:58','2022-09-12 16:56:58',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('e99654d0-32bb-11ed-b5dc-5f69c822e3a5','Raph 13','Test 13','raphael+marketer-test-13@eduksine.com','$2b$10$S1gImwvJUimhugL9DGcxJ.D.q6TkjH.um9ilsFYHi2NqKs5qcxCam',1,'ORGANIZATION','PHP','2022-09-12 16:56:58','2022-09-12 16:56:58','2022-09-12 16:56:58',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('e9ae49a0-32bb-11ed-b5dc-5f69c822e3a5','Raph 14','Test 14','raphael+marketer-test-14@eduksine.com','$2b$10$cD6gGzS3L40PG50ncbvQ3OYeBnpCTro.utUVebtdHTNZnHGqMUNV2',1,'ORGANIZATION','PHP','2022-09-12 16:56:58','2022-09-12 16:56:58','2022-09-12 16:56:58',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('ea26fc10-32bb-11ed-b5dc-5f69c822e3a5','Raph 15','Test 15','raphael+marketer-test-15@eduksine.com','$2b$10$DyXW9bs11IdroVs5ZCIrx.BSHE5RYGCWKWuigsqXZzY8B.CVv4.w6',1,'ORGANIZATION','PHP','2022-09-12 16:56:58','2022-09-12 16:56:59','2022-09-12 16:56:59',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('ea409e90-32bb-11ed-b5dc-5f69c822e3a5','Raph 16','Test 16','raphael+marketer-test-16@eduksine.com','$2b$10$fiiWgEpaIn2ZFXW1w78chOFUO/V.4mVmA.9JkV730iuKvJQWZwrq.',1,'ORGANIZATION','PHP','2022-09-12 16:56:59','2022-09-12 16:56:59','2022-09-12 16:56:59',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('ea6c9090-32bb-11ed-b5dc-5f69c822e3a5','Raph 17','Test 17','raphael+marketer-test-17@eduksine.com','$2b$10$GlbTA2SIykxUlTOtcqiw4./MiXUuhX6sgnY7MhisAo6ghyIiNasO.',1,'ORGANIZATION','PHP','2022-09-12 16:56:59','2022-09-12 16:56:59','2022-09-12 16:56:59',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('ea871d70-32bb-11ed-b5dc-5f69c822e3a5','Raph 18','Test 18','raphael+marketer-test-18@eduksine.com','$2b$10$JvuWVCbLYKIO4cXcejXn/eREtaGzXP8GgRaLYX5JVJk64pIsVGAcO',1,'ORGANIZATION','PHP','2022-09-12 16:56:59','2022-09-12 16:56:59','2022-09-12 16:57:00',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('eac75ac0-32bb-11ed-b5dc-5f69c822e3a5','Raph 19','Test 19','raphael+marketer-test-19@eduksine.com','$2b$10$eyxiW97fGF9Q5uvvzaF/PO.gPRH3MhoEMkbL9x6vBmQNEXAxVgWja',1,'ORGANIZATION','PHP','2022-09-12 16:57:00','2022-09-12 16:57:00','2022-09-12 16:57:00',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('eb0b68a0-32bb-11ed-b5dc-5f69c822e3a5','Raph 20','Test 20','raphael+marketer-test-20@eduksine.com','$2b$10$YDBeWy1z2dBv6c2sa1rCJeHStn8P3WPIk/0lrhyTFjUD/zou/9fJK',1,'ORGANIZATION','PHP','2022-09-12 16:57:00','2022-09-12 16:57:00','2022-09-12 16:57:00',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('eb233660-32bb-11ed-b5dc-5f69c822e3a5','Raph 21','Test 21','raphael+marketer-test-21@eduksine.com','$2b$10$YCOOUrvaFILtSTT3VK1aD.ufP1tXIMD9GB5Udq7esi6lzefV0wv16',1,'ORGANIZATION','PHP','2022-09-12 16:57:00','2022-09-12 16:57:00','2022-09-12 16:57:01',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('eb5988a0-32bb-11ed-b5dc-5f69c822e3a5','Raph 22','Test 22','raphael+marketer-test-22@eduksine.com','$2b$10$iCElEEO7YK82uiNrywML8OdIgs.gXgNASqCirvJz6rxHMcZQWUIlO',1,'ORGANIZATION','PHP','2022-09-12 16:57:01','2022-09-12 16:57:01','2022-09-12 16:57:01',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('eb7e4eb0-32bb-11ed-b5dc-5f69c822e3a5','Raph 23','Test 23','raphael+marketer-test-23@eduksine.com','$2b$10$RUVCdMQd64q0/BjcX6TL9ej2VMgkmOa/9opVF4t69TtJZhuYYLgPK',1,'ORGANIZATION','PHP','2022-09-12 16:57:01','2022-09-12 16:57:01','2022-09-12 16:57:01',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('ebb78720-32bb-11ed-b5dc-5f69c822e3a5','Raph 24','Test 24','raphael+marketer-test-24@eduksine.com','$2b$10$3AsmSrkEc0U02w66z0JLQOgIvxy3B.h34Y1BMEWvuB7Ed/1wGXTX.',1,'ORGANIZATION','PHP','2022-09-12 16:57:01','2022-09-12 16:57:01','2022-09-12 16:57:01',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('ebd48500-32bb-11ed-b5dc-5f69c822e3a5','Raph 25','Test 25','raphael+marketer-test-25@eduksine.com','$2b$10$YmHRmDaVXYY88SnDWzP96exGQUDMoI.gvwQs.00mxlHhQg5MYazH6',1,'ORGANIZATION','PHP','2022-09-12 16:57:01','2022-09-12 16:57:02','2022-09-12 16:57:02',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('ec1e3830-32bb-11ed-b5dc-5f69c822e3a5','Raph 26','Test 26','raphael+marketer-test-26@eduksine.com','$2b$10$qBeLmngLxeoCIG29AfZfiei9H0nTqipxN7YUbdp7HEerVcSpqD2d6',1,'ORGANIZATION','PHP','2022-09-12 16:57:02','2022-09-12 16:57:02','2022-09-12 16:57:02',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('ec3c6e90-32bb-11ed-b5dc-5f69c822e3a5','Raph 27','Test 27','raphael+marketer-test-27@eduksine.com','$2b$10$YqGFT3SYZCv6rjUDVObMbuSJNKtl8TOSz6ZgvjcfAXaRgyCaB4pQ2',1,'ORGANIZATION','PHP','2022-09-12 16:57:02','2022-09-12 16:57:02','2022-09-12 16:57:02',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('ec64b710-32bb-11ed-b5dc-5f69c822e3a5','Raph 28','Test 28','raphael+marketer-test-28@eduksine.com','$2b$10$QaEBzsjh85U2.YHqMaAtJe0kpHEHZG8kbDi0dveOnlgTDFl.q0t3O',1,'ORGANIZATION','PHP','2022-09-12 16:57:02','2022-09-12 16:57:02','2022-09-12 16:57:03',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('ec84c230-32bb-11ed-b5dc-5f69c822e3a5','Raph 29','Test 29','raphael+marketer-test-29@eduksine.com','$2b$10$kHfdsr9mmTVN2QLygTZi/.ZiuWGVpmj07rcgM8fc7JZs.pa6XWogq',1,'ORGANIZATION','PHP','2022-09-12 16:57:03','2022-09-12 16:57:03','2022-09-12 16:57:03',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('eccb8f30-32bb-11ed-b5dc-5f69c822e3a5','Raph 30','Test 30','raphael+marketer-test-30@eduksine.com','$2b$10$5CHaBXV8LmSmFV1fxxv7AuyRvuyH1w9yNedb22jJHDDh6Fp1aC5BS',1,'ORGANIZATION','PHP','2022-09-12 16:57:03','2022-09-12 16:57:03','2022-09-12 16:57:03',NULL);
+INSERT INTO users(id,firstName,lastName,emailAddress,password,isActive,type,currency,emailAddressVerifiedAt,createdAt,updatedAt,invitationExpiresAt) VALUES ('1','Akosi','Khann','test@eduksine.com','$2b$10$QtT.Tei5ZdGS5zOnf9IBRuxnO0cW0of9OSgzFfOkysQoG/zjF7P6y',1,'ORGANIZATION','PHP','2022-09-12 16:57:03','2022-09-12 16:57:03','2022-09-12 16:57:03',NULL);
+
+CREATE TABLE adminRoles(
+  id         VARCHAR(36) NOT NULL PRIMARY KEY
+  ,name      VARCHAR(13) NOT NULL
+  ,isDefault BIT NOT NULL
+  ,createdAt VARCHAR(19) NOT NULL
+  ,updatedAt VARCHAR(19) NOT NULL
+);
+INSERT INTO adminRoles(id,name,isDefault,createdAt,updatedAt) VALUES ('de6b0c20-24a3-11ed-b041-274cb1435614','Administrator',1,'2022-08-25 18:29:35','2022-08-25 18:29:35');
+
+CREATE TABLE admin(
+  id            VARCHAR(36) NOT NULL PRIMARY KEY
+  ,roleId       VARCHAR(36) NOT NULL
+  ,firstName    VARCHAR(30) NOT NULL
+  ,lastName     VARCHAR(30) NOT NULL
+  ,emailAddress VARCHAR(37) NOT NULL
+  ,password     VARCHAR(60) NOT NULL
+  ,isActive     BIT NOT NULL
+  ,createdAt    VARCHAR(19) NOT NULL
+  ,updatedAt    VARCHAR(19) NOT NULL
+  ,FOREIGN KEY (roleId) REFERENCES adminRoles(id)
+);
+INSERT INTO admin(id,roleId,firstName,lastName,emailAddress,password,isActive,createdAt,updatedAt) VALUES ('5f27c940-9d20-11ec-818f-1d82f040afbb','de6b0c20-24a3-11ed-b041-274cb1435614','EdukSine','EdukSine','root@eduksine.com','$2b$10$QlnfyUuSLQOknNsiKloUs.IV1DPYQdN870ryZ2tz8eORxPE68/kXe',1,'2022-08-25 18:29:35','2022-08-25 18:29:35');
+INSERT INTO admin(id,roleId,firstName,lastName,emailAddress,password,isActive,createdAt,updatedAt) VALUES ('9d055070-aae4-11ed-8752-f9ec4ddc07e0','de6b0c20-24a3-11ed-b041-274cb1435614','Jushua','Taduran','team-tech-interns+jushua@eduksine.com','$2b$10$MSVI5t1OhWNR9tfpGLb7bedMyC4Sz1aa0AGLQ/e5Ebty6O2GO69wa',1,'2023-02-12 14:50:38','2023-02-12 14:50:38');
+INSERT INTO admin(id,roleId,firstName,lastName,emailAddress,password,isActive,createdAt,updatedAt) VALUES ('03871760-3426-11ed-8c36-f73bfee9a632','de6b0c20-24a3-11ed-b041-274cb1435614','Raphael','Marco','raphael+test+5@eduksine.com','$2b$10$QtT.Tei5ZdGS5zOnf9IBRuxnO0cW0of9OSgzFfOkysQoG/zjF7P6y',1,'2022-09-14 12:09:24','2022-09-14 12:08:59');
+INSERT INTO admin(id,roleId,firstName,lastName,emailAddress,password,isActive,createdAt,updatedAt) VALUES ('1','de6b0c20-24a3-11ed-b041-274cb1435614','Akosi','Khann','test@eduksine.com','$2b$10$QtT.Tei5ZdGS5zOnf9IBRuxnO0cW0of9OSgzFfOkysQoG/zjF7P6y',1,'2022-09-12 16:57:03','2022-09-12 16:57:03');
+
+CREATE TABLE adminPermissions(
+  id         VARCHAR(36) NOT NULL PRIMARY KEY
+  ,roleId    VARCHAR(36) NOT NULL
+  ,name 	   VARCHAR(20) NOT NULL
+  ,createdAt VARCHAR(19) NOT NULL
+  ,updatedAt VARCHAR(19) NOT NULL
+  ,FOREIGN KEY (roleId) REFERENCES adminRoles(id)
+);
+INSERT INTO adminPermissions(id,roleId,name,createdAt,updatedAt) VALUES ('de756c60-24a3-11ed-b041-274cb1435614','de6b0c20-24a3-11ed-b041-274cb1435614','admins.create','2022-08-25 18:29:35','2022-08-25 18:29:35');
+INSERT INTO adminPermissions(id,roleId,name,createdAt,updatedAt) VALUES ('de75ba80-24a3-11ed-b041-274cb1435614','de6b0c20-24a3-11ed-b041-274cb1435614','admins.read','2022-08-25 18:29:35','2022-08-25 18:29:35');
+INSERT INTO adminPermissions(id,roleId,name,createdAt,updatedAt) VALUES ('de7608a0-24a3-11ed-b041-274cb1435614','de6b0c20-24a3-11ed-b041-274cb1435614','admins.update','2022-08-25 18:29:35','2022-08-25 18:29:35');
+INSERT INTO adminPermissions(id,roleId,name,createdAt,updatedAt) VALUES ('de7608a1-24a3-11ed-b041-274cb1435614','de6b0c20-24a3-11ed-b041-274cb1435614','admins.delete','2022-08-25 18:29:35','2022-08-25 18:29:35');
+INSERT INTO adminPermissions(id,roleId,name,createdAt,updatedAt) VALUES ('de762fb0-24a3-11ed-b041-274cb1435614','de6b0c20-24a3-11ed-b041-274cb1435614','users.create','2022-08-25 18:29:35','2022-08-25 18:29:35');
+INSERT INTO adminPermissions(id,roleId,name,createdAt,updatedAt) VALUES ('de76f300-24a3-11ed-b041-274cb1435614','de6b0c20-24a3-11ed-b041-274cb1435614','users.read','2022-08-25 18:29:35','2022-08-25 18:29:35');
+INSERT INTO adminPermissions(id,roleId,name,createdAt,updatedAt) VALUES ('de771a10-24a3-11ed-b041-274cb1435614','de6b0c20-24a3-11ed-b041-274cb1435614','users.update','2022-08-25 18:29:35','2022-08-25 18:29:35');
+INSERT INTO adminPermissions(id,roleId,name,createdAt,updatedAt) VALUES ('de776830-24a3-11ed-b041-274cb1435614','de6b0c20-24a3-11ed-b041-274cb1435614','users.delete','2022-08-25 18:29:35','2022-08-25 18:29:35');
+INSERT INTO adminPermissions(id,roleId,name,createdAt,updatedAt) VALUES ('de77b650-24a3-11ed-b041-274cb1435614','de6b0c20-24a3-11ed-b041-274cb1435614','categories.create','2022-08-25 18:29:35','2022-08-25 18:29:35');
+INSERT INTO adminPermissions(id,roleId,name,createdAt,updatedAt) VALUES ('de77dd60-24a3-11ed-b041-274cb1435614','de6b0c20-24a3-11ed-b041-274cb1435614','categories.update','2022-08-25 18:29:35','2022-08-25 18:29:35');
+INSERT INTO adminPermissions(id,roleId,name,createdAt,updatedAt) VALUES ('de780470-24a3-11ed-b041-274cb1435614','de6b0c20-24a3-11ed-b041-274cb1435614','categories.delete','2022-08-25 18:29:35','2022-08-25 18:29:35');
+INSERT INTO adminPermissions(id,roleId,name,createdAt,updatedAt) VALUES ('de782b80-24a3-11ed-b041-274cb1435614','de6b0c20-24a3-11ed-b041-274cb1435614','videos.create','2022-08-25 18:29:35','2022-08-25 18:29:35');
+INSERT INTO adminPermissions(id,roleId,name,createdAt,updatedAt) VALUES ('de782b81-24a3-11ed-b041-274cb1435614','de6b0c20-24a3-11ed-b041-274cb1435614','videos.update','2022-08-25 18:29:35','2022-08-25 18:29:35');
+INSERT INTO adminPermissions(id,roleId,name,createdAt,updatedAt) VALUES ('de785290-24a3-11ed-b041-274cb1435614','de6b0c20-24a3-11ed-b041-274cb1435614','videos.delete','2022-08-25 18:29:35','2022-08-25 18:29:35');
+INSERT INTO adminPermissions(id,roleId,name,createdAt,updatedAt) VALUES ('de785291-24a3-11ed-b041-274cb1435614','de6b0c20-24a3-11ed-b041-274cb1435614','videoPreviews.create','2022-08-25 18:29:35','2022-08-25 18:29:35');
+INSERT INTO adminPermissions(id,roleId,name,createdAt,updatedAt) VALUES ('de7879a0-24a3-11ed-b041-274cb1435614','de6b0c20-24a3-11ed-b041-274cb1435614','videoPreviews.delete','2022-08-25 18:29:35','2022-08-25 18:29:35');
+INSERT INTO adminPermissions(id,roleId,name,createdAt,updatedAt) VALUES ('de7879a1-24a3-11ed-b041-274cb1435614','de6b0c20-24a3-11ed-b041-274cb1435614','videoImages.create','2022-08-25 18:29:35','2022-08-25 18:29:35');
+INSERT INTO adminPermissions(id,roleId,name,createdAt,updatedAt) VALUES ('de78a0b0-24a3-11ed-b041-274cb1435614','de6b0c20-24a3-11ed-b041-274cb1435614','videoImages.delete','2022-08-25 18:29:35','2022-08-25 18:29:35');
+INSERT INTO adminPermissions(id,roleId,name,createdAt,updatedAt) VALUES ('de78a0b1-24a3-11ed-b041-274cb1435614','de6b0c20-24a3-11ed-b041-274cb1435614','casts.create','2022-08-25 18:29:35','2022-08-25 18:29:35');
+INSERT INTO adminPermissions(id,roleId,name,createdAt,updatedAt) VALUES ('de78a0b2-24a3-11ed-b041-274cb1435614','de6b0c20-24a3-11ed-b041-274cb1435614','casts.update','2022-08-25 18:29:35','2022-08-25 18:29:35');
+INSERT INTO adminPermissions(id,roleId,name,createdAt,updatedAt) VALUES ('de78c7c0-24a3-11ed-b041-274cb1435614','de6b0c20-24a3-11ed-b041-274cb1435614','casts.delete','2022-08-25 18:29:35','2022-08-25 18:29:35');
+INSERT INTO adminPermissions(id,roleId,name,createdAt,updatedAt) VALUES ('de78eed0-24a3-11ed-b041-274cb1435614','de6b0c20-24a3-11ed-b041-274cb1435614','organizations.create','2022-08-25 18:29:35','2022-08-25 18:29:35');
+INSERT INTO adminPermissions(id,roleId,name,createdAt,updatedAt) VALUES ('de78eed1-24a3-11ed-b041-274cb1435614','de6b0c20-24a3-11ed-b041-274cb1435614','organizations.read','2022-08-25 18:29:35','2022-08-25 18:29:35');
+INSERT INTO adminPermissions(id,roleId,name,createdAt,updatedAt) VALUES ('de78eed2-24a3-11ed-b041-274cb1435614','de6b0c20-24a3-11ed-b041-274cb1435614','organizations.update','2022-08-25 18:29:35','2022-08-25 18:29:35');
+INSERT INTO adminPermissions(id,roleId,name,createdAt,updatedAt) VALUES ('de78eed3-24a3-11ed-b041-274cb1435614','de6b0c20-24a3-11ed-b041-274cb1435614','organizations.delete','2022-08-25 18:29:35','2022-08-25 18:29:35');
+INSERT INTO adminPermissions(id,roleId,name,createdAt,updatedAt) VALUES ('de7915e0-24a3-11ed-b041-274cb1435614','de6b0c20-24a3-11ed-b041-274cb1435614','collections.create','2022-08-25 18:29:35','2022-08-25 18:29:35');
+INSERT INTO adminPermissions(id,roleId,name,createdAt,updatedAt) VALUES ('de7915e1-24a3-11ed-b041-274cb1435614','de6b0c20-24a3-11ed-b041-274cb1435614','collections.update','2022-08-25 18:29:35','2022-08-25 18:29:35');
+INSERT INTO adminPermissions(id,roleId,name,createdAt,updatedAt) VALUES ('de7915e2-24a3-11ed-b041-274cb1435614','de6b0c20-24a3-11ed-b041-274cb1435614','collections.delete','2022-08-25 18:29:35','2022-08-25 18:29:35');
+
+CREATE TABLE movies (
+  id               INT AUTO_INCREMENT PRIMARY KEY
+  ,title           VARCHAR(255) NOT NULL
+  ,poster          VARCHAR(255)
+  ,runtime         INT
+  ,descriptions    VARCHAR(255)
+  ,year            INT
+  ,directors       VARCHAR(255)
+  ,casts           VARCHAR(255)
+  ,category        VARCHAR(255)
+  ,isActive        BIT NOT NULL
+  ,showPoster      BIT NOT NULL
+);
+INSERT INTO movies (title, poster, runtime, descriptions, year, directors, casts, category, isActive, showPoster)
+VALUES 
+('The Godfather', 'images/the-godfather.jpg', 175, 'The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.', 1972, 'Francis Coppola', 'Marlon Brando, Al Pacino, James Caan', 'Crime, Drama', 1, 1);
+INSERT INTO movies (title, poster, runtime, descriptions, year, directors, casts, category, isActive, showPoster)
+VALUES 
+('The Dark Knight', 'images/the-dark-knight.jpg', 152, 'When the menace known as the Joker emerges from his mysterious past, he wreaks havoc and chaos on the people of Gotham.', 2008, 'Christopher Nolan', 'Christian Bale, Heath Ledger, Aaron Eckhart', 'Action, Crime, Drama', 1, 0);
+INSERT INTO movies (title, poster, runtime, descriptions, year, directors, casts, category, isActive, showPoster)
+VALUES 
+('The Shawshank Redemption', 'images/the-shawshank-redemption.jpg', 142, 'Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.', 1994, 'Frank Darabont', 'Tim Robbins, Morgan Freeman, Bob Gunton', 'Drama', 1, 0);
+INSERT INTO movies (title, poster, runtime, descriptions, year, directors, casts, category, isActive, showPoster)
+VALUES 
+('Notting Hill', 'images/notting-hill.jpg', 124, 'The life of a simple bookshop owner changes when he meets the most famous film star in the world.', 1999, 'Roger Michell', 'Hugh Grant, Julia Roberts, Richard McCabe', 'Romance, Comedy, Drama', 1, 1);
+INSERT INTO movies (title, poster, runtime, descriptions, year, directors, casts, category, isActive, showPoster)
+VALUES 
+('The Pursuit of Happyness', 'images/the-pursuit-of-happyness.jpg', 117, 'A struggling salesman takes custody of his son as he is poised to begin a life-changing professional career.', 2006, 'Gabriele Muccino', 'Will Smith, Jaden Smith, Thandie Newton', 'Biography, Drama', 1, 1);

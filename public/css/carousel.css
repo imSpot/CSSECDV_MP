@@ -1,0 +1,122 @@
+* {box-sizing: border-box}
+body {font-family: Verdana, sans-serif; margin:0; background-color: black;}
+.mySlides {display: none}
+img {vertical-align: middle;}
+
+/* for the size of the carousel */
+.carousel-container {
+  max-width: 80%;
+  position: relative;
+  margin: auto;
+  margin-top: 75px;
+}
+
+/* For the sizes of the images within the carousel slide */
+.images img {
+  width: 100%; 
+  height: auto; 
+  display: block;
+}
+
+/* For the position of the gradient (A.K.A. the fade background effect) */
+.gradient-container {
+  position: relative;
+}
+
+/* For the first gradient (A.K.A. the fade background effect) since there are two, this one is for the left */
+.gradient-container:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to right,  rgba(255,255,255,0) 0%, rgba(96,96,96,255) 100%);
+  z-index: -1; 
+}
+
+/* For second gradient (A.K.A. the fade background effect) since there are two, this one is for the right */
+.gradient-container:after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to right,  rgba(96,96,96,255) 0%,rgba(255,255,255,0) 100%);
+  z-index: -1;
+}
+
+/* For the  size of the image itself being fixed*/
+.carousel img {
+    width: 300px;
+    height: 300px;
+    object-fit: contain;
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat no-repeat;
+}
+
+/* Used for gradient-container:before and  gradient-container:after */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -22px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+
+/* for the position of the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* For the effect of when hovering, adds a black background color with a little bit of see-through opacity*/
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+/* for the dots A.K.A pagination */
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+/* Effects for above .dot */
+.active, .dot:hover {
+  background-color: #717171;
+}
+
+/* Fading animation */
+.fade {
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+/* Animation of fade */
+@keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+/* For centering images */
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}

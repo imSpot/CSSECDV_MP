@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Movies</title>
+    <link rel="stylesheet" type="text/css" href="./css/movies-search.css" />
+    {{> header }}
+</head>
+<body>
+    {{> nav-bar }}
+        <h2 style="padding: 21px; color: white;">{{queryType}}</h2>
+    {{#if movies}}
+        {{#if movies.length}}
+            {{#each movies}}
+                <div class="container">
+                    <div class="poster">
+                        {{#if poster}}
+                            <img src="/{{poster}}" alt="{{title}} poster">
+                        {{/if}}
+                    </div>
+                    <div class="details">
+                        <h2>{{title}} ({{year}})</h2>
+                        <div class="categories">
+                            {{#each categories}}
+                                <span class="category" onclick="searchCategory('{{this}}')">{{this}}</span>
+                            {{/each}}
+                        </div>
+                        <a href="#" class="button">Sign in to watch</a>
+                        <p><strong>Runtime:</strong> {{runtime}} minutes</p>
+                        <p><strong>Description:</strong> {{descriptions}}</p>
+                        <p><strong>Director:</strong> {{directors}}</p>
+                        <p><strong>Cast:</strong> {{casts}}</p>
+                    </div>
+                </div>
+            {{/each}}
+        {{else}}
+            <p>No movies found.</p>
+        {{/if}}
+    {{/if}}
+
+    <script>
+        document.getElementById('search-box').addEventListener('focus', function() {
+            document.getElementById('search-dropdown').style.display = 'block';
+        });
+
+        document.getElementById('search-box').addEventListener('blur', function() {
+            setTimeout(function() {
+                document.getElementById('search-dropdown').style.display = 'none';
+            }, 200);
+        });
+
+        function selectSearch(search) {
+            document.getElementById('search-box').value = search;
+            document.getElementById('search-dropdown').style.display = 'none';
+        }
+
+
+    </script>
+</body>
+</html>

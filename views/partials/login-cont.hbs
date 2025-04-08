@@ -1,0 +1,38 @@
+<div id="login-form-container">
+    <form id="login-form" method="POST">
+        <h1>Login</h1>
+        <div id="email">
+            <div class="input">
+                <input type="email" id="email-field" name="email" autocomplete="on" placeholder="Email Address" required=""/>
+            </div>
+        </div>
+        <div id="password">
+            <div class="input">
+                <input type="password" id="password-field" name="password" autocomplete="on" placeholder="Password" required=""/>
+                <span class="show-password">
+                    <i class="fas fa-eye"></i>
+                </span>
+            </div>
+        </div>
+        {{!-- <div id="show-password">
+            <input type="checkbox" id="showPassword">Show Password
+        </div> --}}
+        <!--<div class="options">
+            <div id="remember-me">
+                <div class="input">
+                    <input type="checkbox">Remember Me
+                </div>
+            </div>
+            |
+            <div id="forgot-password">
+                <div class="input">
+                    <a href=https://i.pinimg.com/originals/78/3d/4f/783d4f34998ae3b3b576e400db0d81df.gif>Forgot Password</a>
+                </div>
+            </div>
+        </div>-->
+        <div id="buttons">
+            <input type="submit" class="buttons" id="login-btn" value="Login">
+            <button type="button" class="buttons" id="register-btn">Register</button>
+        </div>
+    </form>
+</div>

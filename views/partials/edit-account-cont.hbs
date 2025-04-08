@@ -1,0 +1,60 @@
+<div class="acctInfo">
+    <form id="editAccountForm" action="/update-account/{{id}}" method="POST">
+        <h2>Edit Account Details</h2>
+        <div class="firstName">
+            <div class="input">
+                <label for="firstName">First Name: </label>
+                <input type="text" name="firstName" id="firstName" value="{{firstName}}" required/>
+            </div>
+        </div>
+        
+        <div class="lastName">
+            <div class="input">
+                <label for="lastName">Last Name: </label>
+                <input type="text" name="lastName" id="lastName" value="{{lastName}}" required/>
+            </div>
+        </div>
+
+        <div class="emailAddress">
+            <div class="input">
+                <label for="emailAddress">Email: </label>
+                <input type="email" name="emailAddress" id="emailAddress" value="{{emailAddress}}" required/>
+            </div>
+        </div>
+        
+        <div class="password">
+            <div class="input">
+                <label for="password">Password: </label>
+                <input type="password" name="password" id="password" required/>
+            </div>
+        </div>
+
+        <div class="confirmPassword">
+            <div class="input">
+                <label for="confirmPassword">Confirm Password: </label>
+                <input type="password" name="confirmPassword" id="confirmPassword" required/>
+                <span class="show-password">
+                    <i class="fas fa-eye"></i>
+                </span>
+            </div>
+        </div>
+
+        <!--<div>
+            <input type="checkbox" id="showPassword" />Show Password
+        </div>-->
+        
+        <div class="makeAdmin">
+            <label for="makeAdmin" class="switch">
+                <input type="checkbox" id="makeAdmin" name="makeAdmin" {{#if isAdmin}}checked{{/if}}>
+                <span class="slider round"></span>
+            </label>
+            <label for="makeAdmin">ADMIN ACCESS</label>
+        </div>
+        
+        <div class="saveEdits">
+            <div class="button">
+                <input type="submit" name="saveEdits" id="saveEdits" value="Save">
+            </div>
+        </div>
+    </form>
+</div>

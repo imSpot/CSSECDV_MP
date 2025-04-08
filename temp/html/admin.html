@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<body>
+    <table style="border: 1px solid black;">
+        <tr>
+            <th>Name</th>
+            <th>Date</th>
+            <th colspan="2">Buttons</th>
+        </tr>
+        <tr id="row1">
+            <td id="row1cell1">John Doe</td>
+            <td id="row1cell2">12-13-2022</td>
+            <td><button id="row1edit">Edit</button></td>
+            <td><button id="row1delete">Delete</button></td>
+        </tr>
+    </table>
+    
+    <script>
+        const editBtn = document.getElementById("row1edit");
+        const delBtn = document.getElementById("row1delete");
+        editBtn.onclick = () => {
+            const input1 = document.getElementById("row1name");
+            const input2 = document.getElementById("row1date");
+            const row1cell1 = document.getElementById("row1cell1");
+            const row1cell2 = document.getElementById("row1cell2");
+            const row1 = document.getElementById("row1");
+    
+            if(editBtn.innerText == "Edit") {
+                editBtn.innerText = "Save";
+                row1cell1.innerHTML = `<input type="text" id="row1name" value=${row1cell1.innerHTML}>`;
+                row1cell2.innerHTML = `<input type="text" id="row1date" value=${row1cell2.innerHTML}>`;
+            } else {
+                editBtn.innerText = "Edit";
+                row1cell1.innerHTML = input1.value;
+                row1cell2.innerHTML = input2.value;
+            }
+        };
+    
+        delBtn.onclick = () => {
+            if(confirm("Are you sure?")){
+                const row = document.getElementById("row1").remove();
+            }
+        };
+    </script>
+</body>

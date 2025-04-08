@@ -1,0 +1,32 @@
+<!--<link rel="stylesheet" href="/public/css/about-us.css">
+<textarea id="user-input">{{text}}</textarea>
+<div id="preview"></div>
+
+<button id="save">Save</button>
+<button id="clear">Clear</button>
+
+<script>
+    const textarea = document.getElementById('user-input');
+    const div = document.getElementById('preview');
+    const saveButton = document.getElementById('save');
+    const clearButton = document.getElementById('clear');
+
+    saveButton.addEventListener('click', () => {
+        const userInput = textarea.value;
+        fetch('/save-text', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ text: userInput })
+        })
+        .then(response => response.json())
+        .then(data => console.log('Text saved successfully!'))
+        .catch(error => console.error('Error saving text:', error));
+    });
+
+    clearButton.addEventListener('click', () => {
+        textarea.value = '';
+        div.innerHTML = '';
+    });
+</script>-->

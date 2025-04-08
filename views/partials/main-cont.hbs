@@ -1,0 +1,23 @@
+<!--Add carousel here-->
+<link rel="stylesheet" href="/public/css/carousel.css">
+
+<div class="carousel-container">
+    {{#each images}}
+        <div class="carousel gradient-container images fade">
+            <img src="{{poster}}" alt="{{title}}" style="width:100%">
+        </div>
+    {{/each}}
+
+    <a class="prev" onclick="addImages(-1)">❮</a>
+    <a class="next" onclick="addImages(1)">❯</a>
+    <script src="/public/js/carousel.js"></script>
+</div>
+
+<br>
+
+<div style="text-align:center">
+    {{#each images}}
+        <span class="dot" onclick="currentImage({{@index}})"></span>
+    {{/each}}
+</div>
+<!--Add movies here-->
