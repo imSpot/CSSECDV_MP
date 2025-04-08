@@ -3,9 +3,10 @@
 ## How To Run On Your Local Machine (Windows)
 
 1. Go to folder where project is located using the file explorer
-2. Enter `cmd` on the directory
-3. Enter `node app.js` or `nodemon app.js` on cmd
-4. Go to your browser and search for [http://localhost:3000/](http://localhost:3000/)
+2. install npm install -g nodemon, then npm install
+3. Enter `cmd` on the directory
+4. Enter `node app.js` or `nodemon app.js` on cmd
+5. Go to your browser and search for [http://localhost:3000/](http://localhost:3000/)
 
 ## Naming Conventions
 
@@ -20,6 +21,7 @@
 
 4. Images with extensions .png, .jpeg, and .gif should use kebab case for their file names:
    - Example: `logo.png`, `product-image.jpeg`, `background-image.gif`
+     
 5. Variables should use pascal case.
     - Example: `buttonName`
 
