@@ -67,10 +67,31 @@ app.get('/', async (req, res) => {
   try {
       // RUN TO ADD COLUMNS TO THE DATABASE
       // database.addColumn('users', 'securityQuestionID', 'INT');
-      // database.addColumn('users', 'securityQuestionAnswer', 'VARCHAR(60)');
+      // database.addColumn('users', 'securityQuestionAnswer', 'VARCHAR(60)');\
+      let userData = await database.getUserById(req.session.userId);
+
+      const lastLoginInteraction = new Date(userData.lastLoginInteraction).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      });
 
       const carouselMovies = await database.searchFilmforCarousel();
-      res.render('main', { images: carouselMovies });
+      if (!lastLoginInteraction){
+        await database.resetFailedLoginAttempt(userData.emailAddress);
+        res.render('main', { images: carouselMovies, welcomeMessage: `"Welcome! Last login attempt was on ${lastLoginInteraction}."`});
+      } else if (req.session.justLoggedIn){
+        res.render('main', { images: carouselMovies, welcomeMessage: `"Welcome back! Last login attempt was on ${lastLoginInteraction}."`});
+        await database.resetFailedLoginAttempt(userData.emailAddress);
+        req.session.justLoggedIn = false;
+      } else {
+        res.render('main', { images: carouselMovies});
+      }
+      
   } catch (error) {
       console.error('Error fetching carousel movies:', error);
       res.status(500).send('Internal Server Error');
@@ -235,8 +256,8 @@ app.post('/login', async (req, res) => {
   // User authentication successful
   req.session.isAdmin = false;
   req.session.userId = userData.id;
+  req.session.justLoggedIn = true; // Set the flag to indicate a successful login
   req.session.role = 'user'; // Add user role to session
-  await database.resetFailedLoginAttempt(userData.emailAddress);
   res.status(200).send({ success: true, isAdmin: false, role: 'user' });
 });
 

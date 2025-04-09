@@ -213,7 +213,7 @@ const database = {
         try {
             await connection.query(`
                 UPDATE users 
-                SET failedLoginAttempts = ?, lastLoginFail = ?, accountLockedUntil = ?
+                SET failedLoginAttempts = ?, lastLoginFail = ?, accountLockedUntil = ?, lastLoginInteraction = NOW()
                 WHERE emailAddress = ?
             `, [failedLoginAttempts, lastLoginFail, accountLockedUntil, emailAddress]);
             await connection.commit();
@@ -233,7 +233,7 @@ const database = {
         try {
             await connection.query(`
                 UPDATE users 
-                SET failedLoginAttempts = ?, accountLockedUntil = ?
+                SET failedLoginAttempts = ?, accountLockedUntil = ?, lastLoginInteraction = NOW()
                 WHERE emailAddress = ?
             `, [0, null, emailAddress]);
             await connection.commit();
