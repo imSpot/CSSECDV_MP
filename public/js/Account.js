@@ -34,6 +34,19 @@ account.post('/add-account', async (req, res) => {
   }
 });
 
+account.post('/change-password', async (req, res) => {
+  const {email, password} = req.body;
+  
+  try{
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await database.changePassword(email, hashedPassword);
+    res.status(200).send('Success updating data');
+  } catch (err) {
+    console.error('Error inserting data:', err.stack);
+    res.status(500).send('Error updating data');
+  }
+});
+
 
 /**
  * @route GET /searchUser
