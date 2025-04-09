@@ -151,6 +151,11 @@ app.get('/register', (req, res) => {
   res.render('register', { header: 'Sign Up'})
 })
 
+app.get('/recovery', (req, res) => {
+  req.session.destroy()
+  res.render('recovery', { header: 'Recover Password'})
+})
+
 app.get('/login', (req, res) => {
   res.render('login')
 })

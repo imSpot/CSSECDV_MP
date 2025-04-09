@@ -1,0 +1,51 @@
+<div id="recovery-form-container">
+    <form id="login-form" method="POST">
+        <h1>Recover Your Password</h1>
+        <div id="email">
+            <div class="input">
+                <input type="email" id="email-field" name="email" autocomplete="on" placeholder="Email Address" required=""/>
+            </div>
+        </div>
+
+        <div class="recoveryQuestion">
+            <div class="drop-down">
+                <select name="recoveryQuestion" id="recoveryQuestion" required>
+                    <option value="">Select Password Recovery Question</option>
+                    <option value="1">What was the name of your first kiss?</option>
+                    <option value="2">What was the name of your first childhood friend?</option>
+                    <option value="3">What was your childhood neighbor's last name?</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="recoveryAnswer">
+            <div class="input">
+                <input type="password" name="recoveryAnswer" id="recoveryAnswer" placeholder="Recovery Question Answer" required=""/>
+                <span class="show-password">
+                    <i class="fas fa-eye recovery"></i>
+                </span>
+            </div>
+        </div>
+
+        <div class="password">
+                <div class="input">
+                    <input type="password" name="password" id="password" placeholder="Password" required=""/>
+                </div>
+            </div>
+
+        <div class="confirmPassword">
+            <div class="input">
+                <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" required=""/>
+                <span class="show-password">
+                    <i class="fas fa-eye"></i>
+                </span>
+            </div>
+        </div>
+
+        <div id="buttons">
+            <input type="submit" class="buttons" id="recover-btn" value="Recover">
+            <button type="button" class="buttons" id="login-btn">Login</button>
+        </div>
+        <div id="error-message" class="error-message"></div>
+    </form>
+</div>

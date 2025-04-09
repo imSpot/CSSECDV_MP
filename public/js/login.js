@@ -2,6 +2,7 @@ const emailField = document.getElementById("email-field");
 const passwordField = document.getElementById("password-field");
 const loginBtn = document.getElementById("login-btn");
 const registerBtn = document.getElementById("register-btn");
+const forgotPasswordBtn = document.getElementById("forgot-password-btn");
 const showPassword = document.querySelector(".show-password i");
 let errorBox = null;
 let errorTimeout;
@@ -93,4 +94,8 @@ loginBtn.addEventListener("click", (event) => {
 
 registerBtn.addEventListener("click", () => {
     window.location.href = "register";
+});
+
+forgotPasswordBtn.addEventListener("click", () => {
+    window.location.href = "recovery";
 });
