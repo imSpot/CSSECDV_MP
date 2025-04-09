@@ -1,11 +1,11 @@
 .browse-container {
   padding: 80px 20px 20px 20px;
   text-align: center;
-  color: white; /* Added white text color for the container */
+  color: white;
 }
 
 .browse-container h1 {
-  color: white; /* Ensuring the heading is white */
+  color: white;
 }
 
 .movie-grid {
@@ -19,7 +19,7 @@
   border: 1px solid #ddd;
   padding: 10px;
   text-align: center;
-  color: white; /* Added white text color for movie items */
+  color: white;
 }
 
 .movie-poster {
@@ -32,11 +32,11 @@
 .movie-title {
   font-size: 1.2em;
   margin-top: 10px;
-  color: white; /* Ensuring movie titles are white */
+  color: white; 
 }
 
 .movie-description {
   font-size: 0.9em;
   margin-top: 5px;
-  color: white; /* Ensuring movie descriptions are white */
+  color: white;
 }
