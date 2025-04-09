@@ -335,6 +335,26 @@ app.get('/check-user', async (req, res) => {
   }
 });
 
+app.get('/validate-recovery-info', async (req, res) => {
+
+  const password = req.query.password;
+  const securityQuestionAnswer = req.query.securityQuestionAnswer;
+  
+  try {
+    const userData = await database.validateRecoveryInfo(req.query.email, req.query.securityQuestionID)
+    if (!userData || !(await bcrypt.compare(securityQuestionAnswer, userData.securityQuestionAnswer))) {
+        res.status(200).send({ success: false, message: 'Invalid input/s. Try again.', exists: false });
+        return;
+    } else {
+        res.status(200).send({ success: true, message: 'Valid input/s.', exists: true });
+        return;
+    }
+  } catch (error) {
+    console.error('Error checking account:', error)
+    res.status(500).json({ error: 'Error checking account' })
+  }
+});
+
 app.get('/logout', (req, res) => {
   // Destroy the session
   req.session.destroy((err) => {

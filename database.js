@@ -226,6 +226,34 @@ const database = {
         return rows;
     },
 
+    validateRecoveryInfo: async (email, securityQuestionID) => {
+        const [rows] = await pool.query('SELECT * FROM users WHERE emailAddress = ? AND securityQuestionID = ?', [email, securityQuestionID]);
+        return rows[0];
+    },
+
+    changePassword: async (emailAddress, password) => {
+        const connection = await pool.getConnection();
+        await connection.beginTransaction();
+        
+        console.log(password, emailAddress);
+        try {
+            // Update user details
+            await connection.query(`
+                UPDATE users 
+                SET password = ?
+                WHERE emailAddress = ?
+            `, [password, emailAddress]);
+            await connection.commit();
+            connection.release();
+
+        } catch (err) {
+            await connection.rollback();
+            connection.release();
+            console.error('Error updating user:', err);
+            throw err;
+        }
+    },
+
     updateUser: async (id, firstName, lastName, emailAddress, password, isAdmin) => {
         const connection = await pool.getConnection();
         await connection.beginTransaction();
