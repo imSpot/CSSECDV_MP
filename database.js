@@ -207,6 +207,16 @@ const database = {
         return result;
     },
 
+    addUserWRecovery: async (firstName, lastName, emailAddress, password, type, recoveryQuestion, recoveryAnswer) => {
+        const newAccountId = uuidv4();
+        const [result] = await pool.query(`
+        INSERT INTO users (id, firstName, lastName, emailAddress, password, isActive, type, currency, emailAddressVerifiedAt, createdAt,
+        updatedAt, invitationExpiresAt, securityQuestionID, securityQuestionAnswer)
+        VALUES (?, ?, ?, ?, ?, 1, ?, 'PHP', NULL, NOW(), NOW(), NULL, ?, ?)
+        `, [newAccountId, firstName, lastName, emailAddress, password, type, recoveryQuestion, recoveryAnswer]);
+        return result;
+    },
+
     searchUser: async (query) => {
         const [rows] = await pool.query(`
             SELECT * FROM users 
@@ -302,7 +312,17 @@ const database = {
           console.error('Error deleting user:', err);
           throw err;
         }
-    }
+    },
+
+    addColumn: async (table, columnName, dataType) => {
+        try {
+            await pool.query(`ALTER TABLE ?? ADD ?? ${dataType}`, [table, columnName]);
+            console.log(`Column ${columnName} added to table ${table}`);
+        } catch (err) {
+            console.error('Error adding column:', err);
+            throw err;
+        }
+    },
 }
 
 module.exports = {pool, database};

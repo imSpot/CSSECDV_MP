@@ -124,7 +124,7 @@ h1 {
     width: 20vw;
 }
 
-.confirmPassword > .input {
+.confirmPassword > .input{
     position: relative;
     display: flex;
     flex-direction: row;
@@ -133,6 +133,16 @@ h1 {
 }
 
 .confirmPassword > .input input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid black;
+    width: 20vw;
+    margin-left: 21px;
+}
+
+.recoveryAnswer > .input input{
     margin-top: 10px;
     margin-bottom: 10px;
     padding: 8px;
@@ -161,14 +171,14 @@ h1 {
 }
 
 /*For add user*/
-.type > .drop-down {
+.type > .drop-down, .recoveryQuestion > .drop-down {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
 }
 
-.type > .drop-down select {
+.type > .drop-down select, .recoveryQuestion > .drop-down select {
     margin-top: 10px;
     margin-bottom: 10px;
     padding: 8px;

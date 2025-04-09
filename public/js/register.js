@@ -2,7 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('addAccountForm');
     const passwordField = document.getElementById("password");
     const confirmPasswordField = document.getElementById("confirmPassword");
+    const recoveryAnswerField = document.getElementById("recoveryAnswer");
     const showPassword = document.querySelector(".show-password i");
+    const showRecoveryAnswer = document.querySelector(".show-password .recovery");
 
     loginBtn.addEventListener("click", () => {
         window.location.href = "login";
@@ -45,6 +47,31 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    showRecoveryAnswer.addEventListener("click", function() {
+        // if(passwordField.type === "password") {
+        //     passwordField.type = "text";
+        //     showPassword.classList.remove("fa-eye");
+        //     showPassword.classList.add("fa-eye-slash");
+        // }
+        if(recoveryAnswerField.type === "password") {
+            recoveryAnswerField.type = "text";
+            showRecoveryAnswer.classList.remove("fa-eye");
+            showRecoveryAnswer.classList.add("fa-eye-slash");
+        } else {
+            recoveryAnswerField.type = "password";
+            showRecoveryAnswer.classList.remove("fa-eye-slash");
+            showRecoveryAnswer.classList.add("fa-eye");
+        }
+        // if clicked, change the color of the icon to #007bff,
+        // and if clicked again, change it back to rgb(201, 14, 14)
+        if(showRecoveryAnswer.style.color === "rgb(201, 14, 14)") {
+            showRecoveryAnswer.style.color = "#333";
+        } else {
+            // showPassword.style.hover.color = "#007bff";
+            showRecoveryAnswer.style.color = "rgb(201, 14, 14)";
+        }
+    });
+
     form.addEventListener('submit', async (event) => {
         event.preventDefault(); // Prevent default form submission
         passwordField.type = "password";
@@ -67,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const emailAddress = data.emailAddress.trim();
         const password = data.password.trim();
         const confirmPassword = data.confirmPassword.trim();
+        const recoveryAnswer = data.recoveryAnswer.trim();
 
         if(!firstName.match(/^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/)) {
             alert('First name should only contain characters and spaces.');
@@ -115,6 +143,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if(password.length > 60) {
             alert('Password should not exceed 60 characters.');
+            return;
+        }
+
+        if(recoveryAnswer.length < 8) {
+            alert('Recovery answer should be at least 8 characters long.');
+            return;
+        }
+
+        if(recoveryAnswer.length > 30) {
+            alert('Recovery answer should not exceed 30 characters.');
             return;
         }
 

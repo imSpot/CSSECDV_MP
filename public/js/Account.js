@@ -15,14 +15,18 @@ const bcrypt = require('bcrypt');
  * @param {string} req.body.emailAddress - Email address of the user
  * @param {string} req.body.password - Password of the user
  * @param {string} req.body.type - Type of the user (e.g., admin, user)
+ * @param {int} req.body.recoveryQuestion - Type of the user (e.g., admin, user)
+ * @param {string} req.body.recoveryAnswer - Security question answer
  * @param {Object} res - Express response object
  * @returns {void}
  */
 account.post('/add-account', async (req, res) => {
-  const { firstName, lastName, emailAddress, password, type} = req.body;
+  const { firstName, lastName, emailAddress, password, type, recoveryQuestion, recoveryAnswer} = req.body;
+  
   try{
     const hashedPassword = await bcrypt.hash(password, 10);
-    await database.addUser(firstName, lastName, emailAddress, hashedPassword, type);
+    const hashedRecAnswer = await bcrypt.hash(recoveryAnswer, 10);
+    await database.addUserWRecovery(firstName, lastName, emailAddress, hashedPassword, type, recoveryQuestion, hashedRecAnswer);
     res.status(200).send('Success inserting data');
   } catch (err) {
     console.error('Error inserting data:', err.stack);

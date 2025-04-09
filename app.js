@@ -42,8 +42,6 @@ app.use((req, res, next) => {
   if (req.session.userId) {
     database.getUserById(req.session.userId)
       .then((user) => {
-        console.log(user);
-
         if (user) {
           res.locals.user = user;
           return next();
@@ -66,6 +64,9 @@ app.use((req, res, next) => {
 // Routes
 app.get('/', async (req, res) => {
   try {
+      // RUN TO ADD COLUMNS TO THE DATABASE
+      // database.addColumn('users', 'securityQuestionID', 'INT');
+      // database.addColumn('users', 'securityQuestionAnswer', 'VARCHAR(60)');
       const carouselMovies = await database.searchFilmforCarousel();
       res.render('main', { images: carouselMovies });
   } catch (error) {

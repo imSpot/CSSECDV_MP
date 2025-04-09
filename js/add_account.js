@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }*/
 
     showPassword.addEventListener("click", function() {
-        console.log('sheesh')
+        
         // if(passwordField.type === "password") {
         //     passwordField.type = "text";
         //     showPassword.classList.remove("fa-eye");
