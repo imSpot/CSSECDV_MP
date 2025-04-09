@@ -25,12 +25,6 @@ body {
     border-radius: 10px;
 }
 
-/* .middle-cont {
-    
-    align-items: center;
-    justify-content: center;
-} */
-
 .options {
     display: flex;
     flex-direction: row;

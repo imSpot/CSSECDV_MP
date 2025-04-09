@@ -133,34 +133,33 @@ app.post('/login', async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  // Fetch user or admin data based on email
-  let adminData = await database.getAdminByEmail(email);
+  // Check for admin credentials first
+  if (email === 'website_admin' && password === 'admin_password') { // Replace with actual admin credentials
+      req.session.isAdmin = true;
+      req.session.role = 'website_admin';
+      res.status(200).send({ success: true, isAdmin: true, role: 'website_admin' });
+      return;
+  } else if (email === 'product_manager' && password === 'manager_password') { // Replace with actual manager credentials
+      req.session.isAdmin = true;
+      req.session.role = 'product_manager';
+      res.status(200).send({ success: true, isAdmin: true, role: 'product_manager' });
+      return;
+  }
+
+  // If not admin, check user credentials
   let userData = await database.getUserByEmail(email);
 
-  /*console.log(userData)
-  console.log(userData === undefined)*/
-
-  if(userData === undefined) {
-    //console.log(1)
-    res.status(401).send({success: false})
-    return
-  } else if(await bcrypt.compare(password, userData.password) == false) {
-      //console.log(2)
-    res.status(401).send({success: false})
-  } else {
-    if(!adminData) {
-      req.session.isAdmin = false;
-      res.status(200).send({success: true, isAdmin: false})
-      
-    } else {
-      req.session.isAdmin = true;
-      req.session.userId = userData.id;
-      console.log(req.session.userId);
-      console.log(userData.id);
-      res.status(200).send({success: true, isAdmin: true})
-    }
+  if (!userData || !(await bcrypt.compare(password, userData.password))) {
+      res.status(401).send({ success: false, message: 'Invalid username and/or password' });
+      return;
   }
-})
+
+  // User authentication successful
+  req.session.isAdmin = false;
+  req.session.userId = userData.id;
+  req.session.role = 'user'; // Add user role to session
+  res.status(200).send({ success: true, isAdmin: false, role: 'user' });
+});
 
 app.get('/add-movie', (req, res) => {
   //res.render('add-movie');
