@@ -3,65 +3,147 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
 }
 
-#login-form-container {
+#header-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.form-header {
+    text-align: left;
+    width: 93%;
+    margin: 0 auto;
+    margin-bottom: 10px;
+}
+
+.form-header h1 {
+    font-size: 30px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    margin: 0;
+}
+
+.login-form-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    text-align: center;
     justify-content: space-evenly;
     margin-top: 30px;
     margin-bottom: 30px;
-    padding: 20px;
-    height: 350px;
+    padding: 35px 15px 35px 15px;
+    height: auto;
     width: 35vw;
     font-family: 'Montserrat', sans-serif;
     font-size: 16px;
-    font-weight: bold;
     color: rgb(255, 255, 255);
-    background-color:rgba(28, 22, 46, 0.856);
+    background-color: rgba(28, 22, 46, 0.856);
     border: 1px solid black;
     border-radius: 10px;
 }
 
-/* .middle-cont {
-    
-    align-items: center;
-    justify-content: center;
-} */
-
-.options {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
+.input-group input {
+    width: 90%;
+    padding: 9px;
     margin-top: 10px;
     margin-bottom: 10px;
-    margin-right: 5px;
-    margin-left: 5px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 14px;
 }
 
-#remember-me > .input {
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-right: 5px;
+.password-container {
+    position: relative;
+    width: 100%;
 }
 
-#forgot-password > .input a {
-    padding: 8px;
+.password-container input[type="password"] {
+    width: 90%;
+    padding-right: 40px; /* Add space for the icon */
+    padding: 9px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.password-container .show-password {
+    position: absolute;
+    top: 50%;
+    right: 45px;
+    transform: translateY(-50%);
     cursor: pointer;
+    color: #888;
+    transition: color 0.2s ease-in-out;
+}
+
+.password-container .show-password:hover {
+    color: #333;
+}
+
+.forgot-password {
+    text-align: right;
+    margin-top: -5px; /* Adjust spacing to align it closer to the password field */
+    margin-bottom: 15px;
+    width: 90%; /* Match the width of the input fields */
+    margin-left: auto; /* Push it to the right */
+    margin-right: auto;
+}
+
+.forgot-password .link {
     color: white;
     text-decoration: none;
+    font-size: 14px;
     transition: color 0.2s ease;
 }
 
-#forgot-password > .input a:hover {
+.forgot-password .link:hover {
     color: rgb(201, 14, 14);
 }
 
+/* Center the login button */
+#buttons-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#login-btn {
+    width: 94%;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 1px solid black;
+    background-color: rgb(201, 14, 14);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#login-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Sign up link centralized below the login button */
+.signup-container {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.signup-container .link {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s ease;
+}
+
+.signup-container .link:hover {
+    color: rgb(201, 14, 14);
+}
+
+/* 
 h1 {
     font-family: 'Montserrat', sans-serif;
     font-size: 30px;
@@ -133,4 +215,4 @@ h1 {
 
 .buttons:hover {
     background-color: #0056b3;
-}
+} */

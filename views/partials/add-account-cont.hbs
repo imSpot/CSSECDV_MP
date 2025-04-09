@@ -3,51 +3,23 @@
 
         <div class = "acctInfo">
             <h1>{{ header }}</h1>
-            <div class="firstName">
-                <div class="input">
-                    <input type="textbox" name="firstName" id="firstName" placeholder="First Name" required/>
-                </div>
-            </div>
 
-            <div class="lastName">
-                <div class="input">
-                    <input type="textbox" name="lastName" id="lastName" placeholder="Last Name" required=""/>
+            <div class="input-group">
+                <div class="name-container">
+                    <input type="text" name="firstName" id="firstName" placeholder="First Name" required />
+                    <input type="text" name="lastName" id="lastName" placeholder="Last Name" required />
                 </div>
-            </div>
+                <input type="email" name="emailAddress" id="emailAddress" placeholder="Email" required />
+                <input type="password" name="password" id="password" placeholder="Password" required />
 
-            <div class="emailAddress">
-                <div class="input">
-                    <input type="email" name="emailAddress" id="emailAddress" placeholder="Email" required=""/>
-                </div>
-            </div>
-
-            <div class="password">
-                <div class="input">
-                    <input type="password" name="password" id="password" placeholder="Password" required=""/>
-                </div>
-            </div>
-
-            <div class="confirmPassword">
-                <div class="input">
-                    <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" required=""/>
+                <div class="password-container">
+                    <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" required />
                     <span class="show-password">
                         <i class="fas fa-eye"></i>
                     </span>
                 </div>
-            </div>
 
-            <div class="type">
-                <div class="drop-down">
-                    <select name="type" id="type" required>
-                        <option value="">Select Type</option>
-                        <option value="PERSONAL">PERSONAL</option>
-                        <option value="ORGANIZATION">ORGANIZATION</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="recoveryQuestion">
-                <div class="drop-down">
+                <div class="recovery-question">
                     <select name="recoveryQuestion" id="recoveryQuestion" required>
                         <option value="">Select Password Recovery Question</option>
                         <option value="1">What was the name of your first kiss?</option>
@@ -55,10 +27,8 @@
                         <option value="3">What was your childhood neighbor's last name?</option>
                     </select>
                 </div>
-            </div>
 
-            <div class="recoveryAnswer">
-                <div class="input">
+                <div class="recovery-answer">
                     <input type="password" name="recoveryAnswer" id="recoveryAnswer" placeholder="Recovery Question Answer" required=""/>
                     <span class="show-password">
                         <i class="fas fa-eye recovery"></i>
@@ -66,7 +36,7 @@
                 </div>
             </div>
 
-            <div class="saveEdits">
+            <div class="save-edits">
                 <div class="button">
                     <input type="submit" name="saveEdits" id="saveEdits" value="Sign Up">
                 </div>
