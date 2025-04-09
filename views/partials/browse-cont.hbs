@@ -1,6 +1,14 @@
-<link rel="stylesheet" href="public/css/browse.css">
+<link rel="stylesheet" href="css/browse.css">
 
-<div>
-    <h1>Eduksine Browse Test</h1>
-
+<div class="browse-container">
+    <h1>Browse Movies</h1>
+    <div class="movie-grid">
+        {{#each movies}}
+        <div class="movie-item">
+            <img src="{{this.poster}}" alt="{{this.title}}" class="movie-poster">
+            <h2 class="movie-title">{{this.title}}</h2>
+            <p class="movie-description">{{this.descriptions}}</p>
+        </div>
+        {{/each}}
+    </div>
 </div>

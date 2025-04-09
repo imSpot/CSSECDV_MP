@@ -231,7 +231,13 @@ app.get('/edit-account/:id', async (req, res) => {
 });
 
 app.get('/browse', async (req, res) => {
-  res.render('browse')
+  try {
+      const movies = await database.getMovies(); 
+      res.render('browse', { movies: movies });
+  } catch (error) {
+      console.error('Error fetching movies:', error);
+      res.status(500).send('Internal Server Error');
+  }
 });
 
 app.get('/orders' , async (req, res) => {

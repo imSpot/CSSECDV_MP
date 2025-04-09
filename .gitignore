@@ -136,3 +136,6 @@ dist
 .pnp.*
 
 .vscode
+*.json
+*.json
+*.json
