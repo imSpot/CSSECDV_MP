@@ -37,6 +37,32 @@ app.use(session({
   cookie: {secure: false}
 }))
 
+// Middleware to check if user is logged in and set user data in res.locals
+app.use((req, res, next) => {
+  if (req.session.userId) {
+    database.getUserById(req.session.userId)
+      .then((user) => {
+        console.log(user);
+
+        if (user) {
+          res.locals.user = user;
+          return next();
+        } else {
+          res.locals.user = null;
+          next();
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching user:", err);
+        next(err);
+      });
+  } else {
+    res.locals.user = null;
+    next();
+  }
+});
+
+
 // Routes
 app.get('/', async (req, res) => {
   try {
@@ -125,7 +151,6 @@ app.get('/register', (req, res) => {
 })
 
 app.get('/login', (req, res) => {
-  req.session.destroy()
   res.render('login')
 })
 

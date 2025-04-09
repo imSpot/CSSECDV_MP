@@ -22,7 +22,14 @@
 
     <div class="header-profile">
         <div class="box-item">
-            <a href="/login"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"></a>
+            {{#if user}}
+                <a href="/login"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"></a>
+                <span class="basic-text">Welcome, {{user.firstName}}</span>
+                <a id="logout" href="/logout">Logout</a>
+            {{else}}
+                <a href="/login"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"></a>
+            {{/if}}
+
         </div>
     </div>
 </div> 
