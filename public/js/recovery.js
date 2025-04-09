@@ -129,7 +129,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         $.get('/validate-recovery-info', { email : emailAddress, password: password, securityQuestionID: recoveryQuestion, securityQuestionAnswer: recoveryAnswer}).then(async res => {
             if(res.exists) {
-                console.log('it exists damn');
                 try {
                     const response = await fetch(form.action, {
                         method: form.method,
@@ -145,14 +144,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         window.location.href = '/login';
                     } else {
                         const errorData = await response.json();
-                        alert(`Error recovering password: ${errorData.message}`);
+                        alert(`Error: ${errorData.message}`);
                     }
                 } catch (error) {
                     console.error('Error:', error);
-                    alert('Error recovering password.');
+                    alert(`Error: ${errorData.message}`);
                 }
             } else {
-                alert('Incorrect input/s. Please try again.');
+                alert('Error: Incorrect input/s. Please try again.');
                 return;
             }
         });

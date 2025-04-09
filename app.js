@@ -180,15 +180,35 @@ app.post('/login', async (req, res) => {
   // If not admin, check user credentials
   let userData = await database.getUserByEmail(email);
 
-  if (!userData || !(await bcrypt.compare(password, userData.password))) {
-      res.status(401).send({ success: false, message: 'Invalid username and/or password' });
+  if (!userData) {
+    res.status(401).send({ success: false, message: 'Invalid username and/or password' });
+    return;
+  }
+
+  if (userData && !(await bcrypt.compare(password, userData.password))) {
+    const failedLoginAttempts = userData.failedLoginAttempts + 1;
+    const lastLoginFail = new Date();
+    const accountLockedUntil = new Date(userData.accountLockedUntil).toLocaleTimeString();
+
+    if (userData.accountLockedUntil && userData.accountLockedUntil > lastLoginFail) {
+      res.status(401).send({message:`Login is locked until ${accountLockedUntil}`});
       return;
+    }
+    if (failedLoginAttempts >= 5) {
+      await database.recordFailedLoginAttempt(userData.emailAddress, 0, lastLoginFail, new Date(Date.now() + 15 * 60 * 1000));
+      res.status(401).send({ success: false, message: 'Too many failed login attempts. Login will be blocked for 15 minutes.' });
+    } else {
+      await database.recordFailedLoginAttempt(userData.emailAddress, failedLoginAttempts, lastLoginFail, null);
+      res.status(401).send({ success: false, message: 'Invalid username and/or password' });   
+    }
+    return;
   }
 
   // User authentication successful
   req.session.isAdmin = false;
   req.session.userId = userData.id;
   req.session.role = 'user'; // Add user role to session
+  await database.resetFailedLoginAttempt(userData.emailAddress);
   res.status(200).send({ success: true, isAdmin: false, role: 'user' });
 });
 

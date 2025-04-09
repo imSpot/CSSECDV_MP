@@ -27,6 +27,8 @@ account.post('/add-account', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const hashedRecAnswer = await bcrypt.hash(recoveryAnswer, 10);
     await database.addUserWRecovery(firstName, lastName, emailAddress, hashedPassword, type, recoveryQuestion, hashedRecAnswer);
+    const newUser = await database.getUserByEmail(emailAddress);
+    await database.addPasswordHistory(newUser.id, hashedPassword);
     res.status(200).send('Success inserting data');
   } catch (err) {
     console.error('Error inserting data:', err.stack);
@@ -39,8 +41,27 @@ account.post('/change-password', async (req, res) => {
   
   try{
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    // check for reuse
+    const newUser = await database.getUserByEmail(email);
+    const password_list = await database.getLatestPasswords(newUser.id);
+
+    for (let i = 0; i < password_list.length; i++) {
+      const isSame = await bcrypt.compare(password, password_list[i].password);
+      if (isSame) {
+        return res.status(400).json({ message: 'Incorrect input/s. Please try again.' });
+      }
+    }
+
+    const passwordAge = await database.getPasswordAge(newUser.id);
+    if (passwordAge < 1) {
+      return res.status(400).json({ message: 'The last password change was fairly new. Please try again in a day.' });
+    }
+
     await database.changePassword(email, hashedPassword);
+    await database.addPasswordHistory(newUser.id, hashedPassword);
     res.status(200).send('Success updating data');
+    
   } catch (err) {
     console.error('Error inserting data:', err.stack);
     res.status(500).send('Error updating data');

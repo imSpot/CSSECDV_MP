@@ -207,6 +207,78 @@ const database = {
         return result;
     },
 
+    recordFailedLoginAttempt: async (emailAddress, failedLoginAttempts, lastLoginFail, accountLockedUntil) => {
+        const connection = await pool.getConnection();
+        await connection.beginTransaction();
+        try {
+            await connection.query(`
+                UPDATE users 
+                SET failedLoginAttempts = ?, lastLoginFail = ?, accountLockedUntil = ?
+                WHERE emailAddress = ?
+            `, [failedLoginAttempts, lastLoginFail, accountLockedUntil, emailAddress]);
+            await connection.commit();
+            connection.release();
+
+        } catch (err) {
+            await connection.rollback();
+            connection.release();
+            console.error('Error updating user:', err);
+            throw err;
+        }
+    },
+
+    resetFailedLoginAttempt: async (emailAddress) => {
+        const connection = await pool.getConnection();
+        await connection.beginTransaction();
+        try {
+            await connection.query(`
+                UPDATE users 
+                SET failedLoginAttempts = ?, accountLockedUntil = ?
+                WHERE emailAddress = ?
+            `, [0, null, emailAddress]);
+            await connection.commit();
+            connection.release();
+
+        } catch (err) {
+            await connection.rollback();
+            connection.release();
+            console.error('Error updating user:', err);
+            throw err;
+        }
+    },
+
+    addPasswordHistory: async (userId, password) => {
+        const newHistoryId = uuidv4();
+        const [result] = await pool.query(`
+        INSERT INTO passwordhistory (id, userId, password, changeDate)
+        VALUES (?, ?, ?, NOW())
+        `, [newHistoryId, userId, password]);
+        return result;
+    },
+
+    getPasswordAge: async (userId) => {
+        const [rows] = await pool.query(`
+            SELECT DATEDIFF(NOW(), changeDate) AS passwordAge
+            FROM passwordhistory 
+            WHERE userId = ? 
+            ORDER BY changeDate DESC 
+            LIMIT 1;
+        `, [userId]);
+
+        return rows[0].passwordAge;
+    },
+
+    getLatestPasswords: async (userId) => {
+        const [rows] = await pool.query(`
+            SELECT * FROM passwordhistory
+            WHERE userId = ? 
+            ORDER BY changeDate DESC 
+            LIMIT 5;
+        `, [userId]);
+
+        return rows;
+    },
+
     addUserWRecovery: async (firstName, lastName, emailAddress, password, type, recoveryQuestion, recoveryAnswer) => {
         const newAccountId = uuidv4();
         const [result] = await pool.query(`
