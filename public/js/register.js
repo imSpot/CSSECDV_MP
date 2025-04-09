@@ -10,22 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = "login";
     });
 
-    // document.getElementById('showPassword').onclick = () => {
-    //     if(passwordField.type === "password" && confirmPasswordField.type === "password") {
-    //         passwordField.type = "text";
-    //         confirmPasswordField.type = "text";
-    //     } else {
-    //         passwordField.type = "password";
-    //         confirmPasswordField.type = "password";
-    //     }
-    // }
-
     showPassword.addEventListener("click", function() {
-        // if(passwordField.type === "password") {
-        //     passwordField.type = "text";
-        //     showPassword.classList.remove("fa-eye");
-        //     showPassword.classList.add("fa-eye-slash");
-        // } 
         if(confirmPasswordField.type === "password" && passwordField.type === "password") {
             passwordField.type = "text";
             confirmPasswordField.type = "text";
@@ -37,22 +22,14 @@ document.addEventListener('DOMContentLoaded', () => {
             showPassword.classList.remove("fa-eye-slash");
             showPassword.classList.add("fa-eye");
         }
-        // if clicked, change the color of the icon to #007bff,
-        // and if clicked again, change it back to rgb(201, 14, 14)
-        if(showPassword.style.color === "rgb(201, 14, 14)") {
+        if (showPassword.style.color === "rgb(201, 14, 14)") {
             showPassword.style.color = "#333";
         } else {
-            // showPassword.style.hover.color = "#007bff";
             showPassword.style.color = "rgb(201, 14, 14)";
         }
     });
 
     showRecoveryAnswer.addEventListener("click", function() {
-        // if(passwordField.type === "password") {
-        //     passwordField.type = "text";
-        //     showPassword.classList.remove("fa-eye");
-        //     showPassword.classList.add("fa-eye-slash");
-        // }
         if(recoveryAnswerField.type === "password") {
             recoveryAnswerField.type = "text";
             showRecoveryAnswer.classList.remove("fa-eye");
@@ -62,12 +39,9 @@ document.addEventListener('DOMContentLoaded', () => {
             showRecoveryAnswer.classList.remove("fa-eye-slash");
             showRecoveryAnswer.classList.add("fa-eye");
         }
-        // if clicked, change the color of the icon to #007bff,
-        // and if clicked again, change it back to rgb(201, 14, 14)
         if(showRecoveryAnswer.style.color === "rgb(201, 14, 14)") {
             showRecoveryAnswer.style.color = "#333";
         } else {
-            // showPassword.style.hover.color = "#007bff";
             showRecoveryAnswer.style.color = "rgb(201, 14, 14)";
         }
     });
@@ -162,8 +136,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             } else {
                 try {
-                    const response = await fetch(form.action, {
-                        method: form.method,
+                    const response = await fetch('/register', {
+                        method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },

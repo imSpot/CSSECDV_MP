@@ -26,6 +26,7 @@ app.use(express.static('public')) // Sets the public folder as the default locat
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
 app.engine('.hbs', exphbs.engine({ extname: '.hbs', defaultLayout: 'main'}))
 app.set('view engine', '.hbs')
 app.use(express.static(__dirname));
@@ -67,6 +68,7 @@ app.get('/', async (req, res) => {
       // RUN TO ADD COLUMNS TO THE DATABASE
       // database.addColumn('users', 'securityQuestionID', 'INT');
       // database.addColumn('users', 'securityQuestionAnswer', 'VARCHAR(60)');
+
       const carouselMovies = await database.searchFilmforCarousel();
       res.render('main', { images: carouselMovies });
   } catch (error) {
@@ -148,12 +150,38 @@ app.post('/save-text', (req, res) => {
 
 app.get('/register', (req, res) => {
   req.session.destroy()
-  res.render('register', { header: 'Sign Up'})
+  res.render('register', { title: 'Sign Up - Eduksine' })
 })
+
+app.post('/register', async (req, res) => {
+  const { firstName, lastName, emailAddress, password, securityQuestionID, recoveryAnswer } = req.body;
+
+  try {
+      // Hash password and recovery answer
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const hashedRecoveryAnswer = await bcrypt.hash(recoveryAnswer, 10);
+
+      // Create user with security info
+      await database.addUserWRecovery(
+          firstName,
+          lastName,
+          emailAddress,
+          hashedPassword,
+          'user', // Default type for regular users
+          securityQuestionID,
+          hashedRecoveryAnswer
+      );
+
+      res.status(200).json({ success: true });
+  } catch (error) {
+      console.error('Registration error:', error);
+      res.status(500).json({ success: false, message: 'Error adding user' });
+  }
+});
 
 app.get('/recovery', (req, res) => {
   req.session.destroy()
-  res.render('recovery', { header: 'Recover Password'})
+  res.render('recovery', { title: 'Recover Password'})
 })
 
 app.get('/login', (req, res) => {
@@ -386,6 +414,32 @@ app.get('/logout', (req, res) => {
       res.redirect('/login');
     }
   });
+});
+
+app.post('/register', async (req, res) => {
+    const { firstName, lastName, emailAddress, password, securityQuestionID, recoveryAnswer } = req.body;
+
+    try {
+        // Hash password and recovery answer
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedRecoveryAnswer = await bcrypt.hash(recoveryAnswer, 10);
+
+        // Create user with security info
+        await database.addUserWRecovery(
+            firstName,
+            lastName,
+            emailAddress,
+            hashedPassword,
+            'user', // Default type for regular users
+            securityQuestionID,
+            hashedRecoveryAnswer
+        );
+
+        res.status(200).json({ success: true });
+    } catch (error) {
+        console.error('Registration error:', error);
+        res.status(500).json({ success: false, message: 'Error adding user' });
+    }
 });
 
 app.use((req, res) => {
