@@ -1,61 +1,10 @@
-{{!-- <div id="login-form-container">
-    <form id="login-form" method="POST">
-        <h1>Login</h1>
-
-        <div class="input-group">
-            <input type="email" name="email" id="email" placeholder="Email" required />
-            <div class="password-container">
-                <input type="password" name="password" id="password" placeholder="Password" required />
-                <span class="show-password">
-                    <i class="fas fa-eye"></i>
-                </span>
-            </div>
-        </div>
-
-        <div id="buttons">
-            <input type="submit" class="buttons" id="login-btn" value="Login">
-            <button type="button" class="buttons" id="register-btn">Register</button>
-            <button type="button" class="buttons" id="forgot-password-btn">Forgot Password</button>
-        </div>
-        <div id="error-message" class="error-message"></div>
-    </form>
-</div> --}}
-
-{{!-- <div id="header-logo">
-    <a href="/"><img src="/images/eduksine-logo.png"/></a>
-</div>
-
-<div class="login-form-container">
-    <form id="login-form" method="POST">
-
-        <h1>Login</h1>
-
-        <div class="input-group">
-            <input type="email" name="email" id="email" placeholder="Email" required />
-            <div class="password-container">
-                <input type="password" name="password" id="password" placeholder="Password" required />
-                <span class="show-password">
-                    <i class="fas fa-eye"></i>
-                </span>
-            </div>
-        </div>
-
-        <a href="/forgot-password">Forgot Password</a>
-
-        <div id="buttons-container">
-            <a href="/login" class="buttons">Login</a>
-            <a href="/register" class="buttons">Register</a>
-        </div>
-        <div id="error-message" class="error-message"></div>
-    </form>
-</div> --}}
 
 <div id="header-logo">
     <img src="/images/eduksine-logo.png" /></a>
 </div>
 
-<div class="login-form-container">
-    <form id="login-form" method="POST">
+<div class="login-form-container" id="login-form-container">
+    <form id="login-form" method="POST" action="/login">
         <div class="form-header">
             <h1>Login</h1>
         </div>

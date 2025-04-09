@@ -197,13 +197,13 @@ const database = {
         return rows[0];
     },
 
-    addUser: async (firstName, lastName, emailAddress, password, type) => {
+    addUser: async (firstName, lastName, emailAddress, password) => {
         const newAccountId = uuidv4();
         const [result] = await pool.query(`
-        INSERT INTO users (id, firstName, lastName, emailAddress, password, isActive, type, currency, emailAddressVerifiedAt, createdAt,
+        INSERT INTO users (id, firstName, lastName, emailAddress, password, isActive, currency, emailAddressVerifiedAt, createdAt,
         updatedAt, invitationExpiresAt )
         VALUES (?, ?, ?, ?, ?, 1, ?, 'PHP', NULL, NOW(), NOW(), NULL)
-        `, [newAccountId, firstName, lastName, emailAddress, password, type]);
+        `, [newAccountId, firstName, lastName, emailAddress, password]);
         return result;
     },
 
