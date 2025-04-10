@@ -20,7 +20,6 @@ body{
     display: flex;
     width: 19%;
     margin: 10px;
-    overflow: auto;
     white-space: nowrap;
 }
 
