@@ -218,7 +218,14 @@ app.get('/recovery', (req, res) => {
 })
 
 app.get('/change-password', (req, res) => {
-  res.render('change-password', { title: 'Change Password'})
+  if (!req.session.userId) {
+    res.status(401).render('handling', {
+      title: 'Unauthorized Access',
+      body: 'You are not authorized to access this page.'
+    });
+  } else {
+    res.render('change-password', { title: 'Change Password'})
+  }
 })
 
 app.get('/login', (req, res) => {
