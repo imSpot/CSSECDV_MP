@@ -70,6 +70,61 @@ router.get('/edit-movie', (req, res) => {
  *
  * @returns {void} This function does not return any value.
  */
+
+// router.get('/movies-search', async (req, res) => {
+//     const title = req.query.title || '';
+//     let queryType = 'All Movies';
+
+//     try {
+//         let movies;
+
+//         // Check if the title starts with specific prefixes
+//         if (title.toLowerCase().startsWith('categories:')) {
+//             const category = title.substring(11).trim().toLowerCase();
+//             console.log('Searching for movies with category:', category);
+//             queryType = `Movies with category: ${category}`;
+//             movies = await database.getMovies(); // Fetch all movies to filter by category
+//             movies = movies.filter(movie =>
+//                 movie.category.toLowerCase().includes(category)
+//             );
+//         } else if (title.toLowerCase().startsWith('director:')) {
+//             const director = title.substring(9).trim().toLowerCase();
+//             console.log('Searching for movies with director:', director);
+//             queryType = `Movies with director: ${director}`;
+//             movies = await database.getMovies(); // Fetch all movies to filter by director
+//             movies = movies.filter(movie =>
+//                 movie.directors.toLowerCase().includes(director)
+//             );
+//         } else if (title.toLowerCase().startsWith('casts:')) {
+//             const cast = title.substring(6).trim().toLowerCase();
+//             console.log('Searching for movies with cast:', cast);
+//             queryType = `Movies with cast: ${cast}`;
+//             movies = await database.getMovies(); // Fetch all movies to filter by cast
+//             movies = movies.filter(movie =>
+//                 movie.casts.toLowerCase().includes(cast)
+//             );
+//         } else if (title) {
+//             console.log('Searching for movies with title:', title);
+//             queryType = `Movies with title: ${title}`;
+//             movies = await database.searchMovies(title);
+//         } else {
+//             console.log('Fetching all movies...');
+//             movies = await database.getMovies();
+//         }
+
+//         const processedMovies = movies.map(movie => ({
+//             ...movie,
+//             categories: movie.category.split(',').map(cat => cat.trim())
+//         }));
+
+//         console.log('Movies found:', movies.length);
+//         res.render('movies-search', { movies: processedMovies, queryType });
+//     } catch (err) {
+//         console.error('Error fetching data:', err.stack);
+//         res.status(500).send('Error fetching data');
+//     }
+// });
+
 router.get('/movies-search', async (req, res) => {
     const title = req.query.title || '';
     let queryType = 'All Movies';
@@ -77,32 +132,7 @@ router.get('/movies-search', async (req, res) => {
     try {
         let movies;
 
-        // Check if the title starts with specific prefixes
-        if (title.toLowerCase().startsWith('categories:')) {
-            const category = title.substring(11).trim().toLowerCase();
-            console.log('Searching for movies with category:', category);
-            queryType = `Movies with category: ${category}`;
-            movies = await database.getMovies(); // Fetch all movies to filter by category
-            movies = movies.filter(movie =>
-                movie.category.toLowerCase().includes(category)
-            );
-        } else if (title.toLowerCase().startsWith('director:')) {
-            const director = title.substring(9).trim().toLowerCase();
-            console.log('Searching for movies with director:', director);
-            queryType = `Movies with director: ${director}`;
-            movies = await database.getMovies(); // Fetch all movies to filter by director
-            movies = movies.filter(movie =>
-                movie.directors.toLowerCase().includes(director)
-            );
-        } else if (title.toLowerCase().startsWith('casts:')) {
-            const cast = title.substring(6).trim().toLowerCase();
-            console.log('Searching for movies with cast:', cast);
-            queryType = `Movies with cast: ${cast}`;
-            movies = await database.getMovies(); // Fetch all movies to filter by cast
-            movies = movies.filter(movie =>
-                movie.casts.toLowerCase().includes(cast)
-            );
-        } else if (title) {
+        if (title) {
             console.log('Searching for movies with title:', title);
             queryType = `Movies with title: ${title}`;
             movies = await database.searchMovies(title);
@@ -111,16 +141,29 @@ router.get('/movies-search', async (req, res) => {
             movies = await database.getMovies();
         }
 
+        if (!movies || movies.length === 0) {
+            // Render the page with an error message if no movies are found
+            return res.render('movies-search', {
+                movies: [],
+                queryType,
+                title,
+                errorMessage: `No results found for "${title}". Please try another search.`,
+            });
+        }
+
         const processedMovies = movies.map(movie => ({
             ...movie,
-            categories: movie.category.split(',').map(cat => cat.trim())
+            categories: movie.category.split(',').map(cat => cat.trim()),
         }));
 
-        console.log('Movies found:', movies.length);
         res.render('movies-search', { movies: processedMovies, queryType });
     } catch (err) {
         console.error('Error fetching data:', err.stack);
-        res.status(500).send('Error fetching data');
+        res.status(500).render('movies-search', {
+            movies: [],
+            queryType: 'Error',
+            errorMessage: 'An error occurred while fetching data. Please try again later.',
+        });
     }
 });
 

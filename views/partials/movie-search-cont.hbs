@@ -1,0 +1,29 @@
+<div id="search-results">
+    <h2>{{queryType}}</h2>
+    {{#if movies}}
+        {{#each movies}}
+            <div class="container">
+                <div class="poster">
+                    {{#if poster}}
+                        <img src="/{{poster}}" alt="{{title}} poster">
+                    {{/if}}
+                </div>
+                <div class="details">
+                    <h2>{{title}} ({{year}})</h2>
+                    <div class="categories">
+                        {{#each categories}}
+                            <span class="category" onclick="searchCategory('{{this}}')">{{this}}</span>
+                        {{/each}}
+                    </div>
+                    <a href="#" class="button">Sign in to watch</a>
+                    <p><strong>Runtime:</strong> {{runtime}} minutes</p>
+                    <p><strong>Description:</strong> {{descriptions}}</p>
+                    <p><strong>Director:</strong> {{directors}}</p>
+                    <p><strong>Cast:</strong> {{casts}}</p>
+                </div>
+            </div>
+        {{/each}}
+    {{else}}
+        <p class="error-message">No movies found.</p>
+    {{/if}}
+</div>
