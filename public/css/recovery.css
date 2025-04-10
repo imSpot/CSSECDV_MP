@@ -6,7 +6,7 @@ body {
     height: 100vh;
 }
 
-#recovery-form-container {
+#recovery-form-container, #change-password-form-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -101,6 +101,10 @@ h1 {
     position: relative;
 }
 
+.newPassword > .input{
+    position: relative;
+}
+
 .confirmPassword > .input input {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -120,7 +124,7 @@ h1 {
     transition: color 0.3s ease-in-out;
 }
 
-.recoveryAnswer > .input input{
+.recoveryAnswer > .input input, .newPassword > .input input{
     margin-top: 10px;
     margin-bottom: 10px;
     padding: 8px;

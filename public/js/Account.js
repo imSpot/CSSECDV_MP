@@ -68,6 +68,39 @@ account.post('/change-password', async (req, res) => {
   }
 });
 
+account.post('/change-password-user', async (req, res) => {
+  const {email, newPassword} = req.body;
+  
+  try{
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // check for reuse
+    const newUser = await database.getUserByEmail(email);
+    const password_list = await database.getLatestPasswords(newUser.id);
+
+    for (let i = 0; i < password_list.length; i++) {
+      const isSame = await bcrypt.compare(newPassword, password_list[i].password);
+      if (isSame) {
+        return res.status(400).json({ message: 'You cannot reuse old passwords.' });
+      }
+    }
+
+    const passwordAge = await database.getPasswordAge(newUser.id);
+    if (passwordAge < 1) {
+      return res.status(400).json({ message: 'The last password change was fairly new. Please try again in a day.' });
+    }
+
+    await database.changePassword(email, hashedPassword);
+    await database.addPasswordHistory(newUser.id, hashedPassword);
+    res.status(200).send('Success updating data');
+    req.session.destroy();
+    
+  } catch (err) {
+    console.error('Error inserting data:', err.stack);
+    res.status(500).send('Error updating data');
+  }
+});
+
 
 /**
  * @route GET /searchUser

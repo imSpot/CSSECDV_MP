@@ -70,7 +70,7 @@ app.get('/', async (req, res) => {
       // database.addColumn('users', 'securityQuestionAnswer', 'VARCHAR(60)');\
       let userData = await database.getUserById(req.session.userId);
 
-      const lastLoginInteraction = new Date(userData.lastLoginInteraction).toLocaleDateString('en-US', {
+      const lastLoginInteraction = userData.lastLoginInteraction ? new Date(userData.lastLoginInteraction).toLocaleDateString('en-US', {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
@@ -78,7 +78,7 @@ app.get('/', async (req, res) => {
         minute: '2-digit',
         second: '2-digit',
         hour12: false
-      });
+      }) : null;
 
       const carouselMovies = await database.searchFilmforCarousel();
       if (!lastLoginInteraction){
@@ -205,7 +205,12 @@ app.get('/recovery', (req, res) => {
   res.render('recovery', { title: 'Recover Password'})
 })
 
+app.get('/change-password', (req, res) => {
+  res.render('change-password', { title: 'Change Password'})
+})
+
 app.get('/login', (req, res) => {
+  req.session.destroy()
   res.render('login')
 })
 
@@ -423,6 +428,29 @@ app.get('/validate-recovery-info', async (req, res) => {
     res.status(500).json({ error: 'Error checking account' })
   }
 });
+
+app.get('/validate-user', async (req, res) => {
+
+  const password = req.query.password;
+  const email = req.query.email;
+
+  
+  try {
+    let userData = await database.getUserByEmail(email);
+    if (!userData || !(await bcrypt.compare(password, userData.password))) {
+        res.status(200).send({ success: false, message: 'Invalid username and/or password.', exists: false });
+        return;
+    } else {
+        res.status(200).send({ success: true, message: 'Valid input/s.', exists: true });
+        return;
+    }
+
+  } catch (error) {
+    console.error('Error checking account:', error)
+    res.status(500).json({ error: 'Error checking account' })
+  }
+});
+
 
 app.get('/logout', (req, res) => {
   // Destroy the session
