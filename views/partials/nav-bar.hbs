@@ -24,8 +24,14 @@
         <div class="box-item">
             {{#if user}}
                 <a href="/login"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"></a>
-                <span class="basic-text">Welcome, {{user.firstName}}</span>
-                <a id="logout" href="/logout">Logout</a>
+                <div class="menu-container">
+                    <span class="basic-text clickable-text" id="account-menu-btn" >Welcome, {{user.firstName}}</span>
+                    <div id="menu">
+                        <a id="change-password-btn" class="menu-sub-btn" href="/change-password">Change Password</a>
+                        <a class="menu-sub-btn" href="/logout">Logout</a>
+                    </div>
+                </div>
+                
             {{else}}
                 <a href="/login"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"></a>
             {{/if}}
