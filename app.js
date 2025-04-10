@@ -65,36 +65,48 @@ app.use((req, res, next) => {
 // Routes
 app.get('/', async (req, res) => {
   try {
-      // RUN TO ADD COLUMNS TO THE DATABASE
-      // database.addColumn('users', 'securityQuestionID', 'INT');
-      // database.addColumn('users', 'securityQuestionAnswer', 'VARCHAR(60)');\
-      let userData = await database.getUserById(req.session.userId);
+    const carouselMovies = await database.searchFilmforCarousel();
+    
+    // Use the user data from middleware instead of querying again
+    const userData = res.locals.user;
 
-      const lastLoginInteraction = userData.lastLoginInteraction ? new Date(userData.lastLoginInteraction).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false
-      }) : null;
+    if (userData) {
+      // Handle logged-in user flow
+      const lastLoginInteraction = userData.lastLoginInteraction 
+        ? new Date(userData.lastLoginInteraction).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+          })
+        : null;
 
-      const carouselMovies = await database.searchFilmforCarousel();
-      if (!lastLoginInteraction){
+      if (!lastLoginInteraction) {
         await database.resetFailedLoginAttempt(userData.emailAddress);
-        res.render('main', { images: carouselMovies, welcomeMessage: `"Welcome! Last login attempt was on ${lastLoginInteraction}."`});
-      } else if (req.session.justLoggedIn){
-        res.render('main', { images: carouselMovies, welcomeMessage: `"Welcome back! Last login attempt was on ${lastLoginInteraction}."`});
-        await database.resetFailedLoginAttempt(userData.emailAddress);
-        req.session.justLoggedIn = false;
-      } else {
-        res.render('main', { images: carouselMovies});
+        return res.render('main', { 
+          images: carouselMovies, 
+          welcomeMessage: `Welcome! This is your first login.`
+        });
       }
       
+      if (req.session.justLoggedIn) {
+        await database.resetFailedLoginAttempt(userData.emailAddress);
+        req.session.justLoggedIn = false;
+        return res.render('main', { 
+          images: carouselMovies, 
+          welcomeMessage: `Welcome back! Last login: ${lastLoginInteraction}`
+        });
+      }
+    }
+
+    // Default render for non-logged-in users
+    res.render('main', { images: carouselMovies });
   } catch (error) {
-      console.error('Error fetching carousel movies:', error);
-      res.status(500).send('Internal Server Error');
+    console.error('Error fetching carousel movies:', error);
+    res.status(500).send('Internal Server Error');
   }
 });
 
@@ -498,4 +510,3 @@ app.use((req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`)
 })
-
