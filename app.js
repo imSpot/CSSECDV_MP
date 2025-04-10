@@ -226,56 +226,135 @@ app.get('/login', (req, res) => {
   res.render('login')
 })
 
-app.post('/login', async (req, res) => {
-  const email = req.body.email;
-  const password = req.body.password;
+// app.post('/login', async (req, res) => {
+//   const email = req.body.email;
+//   const password = req.body.password;
 
-  // Check for admin credentials first
-  if (email === 'website_admin' && password === 'admin_password') { // Replace with actual admin credentials
+//   // Check for admin credentials first
+//   if (email === 'website_admin' && password === 'admin_password') { // Replace with actual admin credentials
+//       req.session.isAdmin = true;
+//       req.session.role = 'website_admin';
+//       res.status(200).send({ success: true, isAdmin: true, role: 'website_admin' });
+//       return;
+//   } else if (email === 'product_manager' && password === 'manager_password') { // Replace with actual manager credentials
+//       req.session.isAdmin = true;
+//       req.session.role = 'product_manager';
+//       res.status(200).send({ success: true, isAdmin: true, role: 'product_manager' });
+//       return;
+//   }
+
+//   // If not admin, check user credentials
+//   let userData = await database.getUserByEmail(email);
+
+//   if (!userData) {
+//     res.status(401).send({ success: false, message: 'Invalid username and/or password' });
+//     return;
+//   }
+
+//   if (userData && !(await bcrypt.compare(password, userData.password))) {
+//     const failedLoginAttempts = userData.failedLoginAttempts + 1;
+//     const lastLoginFail = new Date();
+//     const accountLockedUntil = new Date(userData.accountLockedUntil).toLocaleTimeString();
+
+//     if (userData.accountLockedUntil && userData.accountLockedUntil > lastLoginFail) {
+//       res.status(401).send({message:`Login is locked until ${accountLockedUntil}`});
+//       return;
+//     }
+//     if (failedLoginAttempts >= 5) {
+//       await database.recordFailedLoginAttempt(userData.emailAddress, 0, lastLoginFail, new Date(Date.now() + 15 * 60 * 1000));
+//       res.status(401).send({ success: false, message: 'Too many failed login attempts. Login will be blocked for 15 minutes.' });
+//     } else {
+//       await database.recordFailedLoginAttempt(userData.emailAddress, failedLoginAttempts, lastLoginFail, null);
+//       res.status(401).send({ success: false, message: 'Invalid username and/or password' });   
+//     }
+//     return;
+//   }
+
+//   // User authentication successful
+//   req.session.isAdmin = false;
+//   req.session.userId = userData.id;
+//   req.session.justLoggedIn = true;
+//   req.session.role = 'user';
+
+//   // Add this update to record login time
+//   await pool.query(`
+//     UPDATE users 
+//     SET lastLoginInteraction = NOW() 
+//     WHERE id = ?
+//   `, [userData.id]);
+
+//   res.status(200).send({ success: true, isAdmin: false, role: 'user' });
+// });
+
+app.post('/login', async (req, res, next) => {
+  try {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    // Check for admin credentials first
+    if (email === 'website_admin' && password === 'admin_password') {
       req.session.isAdmin = true;
       req.session.role = 'website_admin';
-      res.status(200).send({ success: true, isAdmin: true, role: 'website_admin' });
-      return;
-  } else if (email === 'product_manager' && password === 'manager_password') { // Replace with actual manager credentials
+      return res.status(200).send({ success: true, isAdmin: true, role: 'website_admin' });
+    } else if (email === 'product_manager' && password === 'manager_password') {
       req.session.isAdmin = true;
       req.session.role = 'product_manager';
-      res.status(200).send({ success: true, isAdmin: true, role: 'product_manager' });
-      return;
-  }
-
-  // If not admin, check user credentials
-  let userData = await database.getUserByEmail(email);
-
-  if (!userData) {
-    res.status(401).send({ success: false, message: 'Invalid username and/or password' });
-    return;
-  }
-
-  if (userData && !(await bcrypt.compare(password, userData.password))) {
-    const failedLoginAttempts = userData.failedLoginAttempts + 1;
-    const lastLoginFail = new Date();
-    const accountLockedUntil = new Date(userData.accountLockedUntil).toLocaleTimeString();
-
-    if (userData.accountLockedUntil && userData.accountLockedUntil > lastLoginFail) {
-      res.status(401).send({message:`Login is locked until ${accountLockedUntil}`});
-      return;
+      return res.status(200).send({ success: true, isAdmin: true, role: 'product_manager' });
     }
-    if (failedLoginAttempts >= 5) {
-      await database.recordFailedLoginAttempt(userData.emailAddress, 0, lastLoginFail, new Date(Date.now() + 15 * 60 * 1000));
-      res.status(401).send({ success: false, message: 'Too many failed login attempts. Login will be blocked for 15 minutes.' });
-    } else {
-      await database.recordFailedLoginAttempt(userData.emailAddress, failedLoginAttempts, lastLoginFail, null);
-      res.status(401).send({ success: false, message: 'Invalid username and/or password' });   
-    }
-    return;
-  }
 
-  // User authentication successful
-  req.session.isAdmin = false;
-  req.session.userId = userData.id;
-  req.session.justLoggedIn = true; // Set the flag to indicate a successful login
-  req.session.role = 'user'; // Add user role to session
-  res.status(200).send({ success: true, isAdmin: false, role: 'user' });
+    // If not admin, check user credentials
+    const userData = await database.getUserByEmail(email);
+
+    if (!userData) {
+      return res.status(401).send({ success: false, message: 'Invalid username and/or password' });
+    }
+
+    if (!(await bcrypt.compare(password, userData.password))) {
+      const failedLoginAttempts = userData.failedLoginAttempts + 1;
+      const lastLoginFail = new Date();
+      const accountLockedUntil = userData.accountLockedUntil
+        ? new Date(userData.accountLockedUntil).toLocaleString('en-US', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false,
+          })
+        : null;
+
+      if (userData.accountLockedUntil && userData.accountLockedUntil > Date.now()) {
+        return res.status(401).send({ message: `Login is locked until ${accountLockedUntil}` });
+      }
+
+      if (failedLoginAttempts >= 5) {
+        const lockUntil = new Date(Date.now() + 15 * 60 * 1000); // Lock for 15 minutes
+        await database.recordFailedLoginAttempt(userData.emailAddress, 0, lastLoginFail, lockUntil);
+        return res.status(401).send({ success: false, message: 'Too many failed login attempts. Login will be blocked for 15 minutes.' });
+      } else {
+        await database.recordFailedLoginAttempt(userData.emailAddress, failedLoginAttempts, lastLoginFail, null);
+        return res.status(401).send({ success: false, message: 'Invalid username and/or password' });
+      }
+    }
+
+    // User authentication successful
+    req.session.isAdmin = false;
+    req.session.userId = userData.id;
+    req.session.justLoggedIn = true;
+    req.session.role = 'user';
+
+    // Update last login interaction
+    await pool.query(`
+      UPDATE users 
+      SET lastLoginInteraction = NOW() 
+      WHERE id = ?
+    `, [userData.id]);
+
+    res.status(200).send({ success: true, isAdmin: false, role: 'user' });
+  } catch (err) {
+    next(err); // Pass the error to the generic error handler
+  }
 });
 
 app.get('/add-movie', (req, res) => {
@@ -503,8 +582,24 @@ app.post('/register', async (req, res) => {
     }
 });
 
+// app.use((req, res) => {
+//   res.status(401).render('handling', { title: 'Page Not Found', body: 'Error 404. Page not found.' });
+// });
 app.use((req, res) => {
-  res.status(401).render('handling', { title: 'Page Not Found', body: 'Error 404. Page not found.' });
+  res.status(404).render('handling', {
+    title: 'Page Not Found',
+    body: 'Error 404: The page you are looking for does not exist.',
+  });
+});
+
+app.use((err, req, res, next) => {
+  console.error('Error:', err.stack); // Log the error for debugging
+
+  // Render a custom error page
+  res.status(err.status || 500).render('handling', {
+    title: 'Error',
+    body: 'Something went wrong. Please try again later.',
+  });
 });
 
 app.listen(port, () => {
