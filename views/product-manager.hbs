@@ -1,0 +1,27 @@
+<head>
+  <title>Product Manager Dashboard</title>
+  <link rel="stylesheet" type="text/css" href="/css/product-manager.css" />
+  <script src="/js/product-manager.js" defer></script>
+</head>
+<body>
+  <nav class="nav-bar">
+    <div class="logo">
+      <img src="/images/eduksine-logo.png" alt="Eduksine Logo">
+    </div>
+    <div class="profile">
+      <a href="/logout">Logout</a>
+    </div>
+  </nav>
+  <div id="product-manager-container">
+    <h1>Product Manager Dashboard</h1>
+    <button id="add-movie-btn">Add New Movie</button>
+    <div id="movie-form-container" style="display: none;">
+      <form id="add-movie-form">
+        <input type="text" name="title" placeholder="Movie Title" required>
+        <input type="text" name="director" placeholder="Director" required>
+        <textarea name="description" placeholder="Description" required></textarea>
+        <button type="submit">Add Movie</button>
+      </form>
+    </div>
+  </div>
+</body>

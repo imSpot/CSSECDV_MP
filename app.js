@@ -61,6 +61,27 @@ app.use((req, res, next) => {
   }
 });
 
+// Middleware to restrict access to admin-only pages
+const isAdmin = (req, res, next) => {
+  if (req.session.isAdmin && req.session.role === 'admin') {
+    return next();
+  }
+  res.status(403).render('handling', {
+    title: 'Unauthorized Access',
+    body: 'You are not authorized to access this page.',
+  });
+};
+
+// Middleware to restrict access to product manager-only pages
+const isProductManager = (req, res, next) => {
+  if (req.session.isAdmin && req.session.role === 'product_manager') {
+    return next();
+  }
+  res.status(403).render('handling', {
+    title: 'Unauthorized Access',
+    body: 'You are not authorized to access this page.',
+  });
+};
 
 // Routes
 app.get('/', async (req, res) => {
@@ -149,10 +170,45 @@ app.get('/get-about-us', (req, res) => {
   }
 });
 
-app.get('/admin', (req, res) => {
-  if (req.session.isAdmin) {
-    res.render('admin');
+// app.get('/admin', isAdmin, (req, res) => {
+//   res.render('admin', { title: 'Admin Dashboard' });
+// });
+
+// app.get('/product-manager', isProductManager, (req, res) => {
+//   res.render('product-manager');
+// });
+
+app.get('/product-manager', isProductManager, (req, res) => {
+  if (req.session.isProductManager) {
+    res.render('product-manager', { title: 'Product Manager Dashboard' });
   } else {
+    // log the unauthorized access attempt
+    database.logActivity(
+      req.session.userId,
+      'FAILED',
+      'Product Manager Access',
+      `[Unauthorized Access] Email: ${req.session.emailAddress} IP: ${req.ip}`,
+      req.session.role,
+    );
+    res.status(401).render('handling', {
+      title: 'Unauthorized Access',
+      body: 'You are not authorized to access this page.'
+    });
+  }
+});
+
+app.get('/admin', isAdmin, (req, res) => {
+  if (req.session.isAdmin) {
+    res.render('admin', { title: 'Admin Dashboard' });
+  } else {
+    // log the unauthorized access attempt
+    database.logActivity(
+      req.session.userId,
+      'FAILED',
+      'Admin Access',
+      `[Unauthorized Access] Email: ${req.session.emailAddress} IP: ${req.ip}`,
+      req.session.role,
+    );
     res.status(401).render('handling', {
       title: 'Unauthorized Access',
       body: 'You are not authorized to access this page.'
@@ -299,16 +355,16 @@ app.post('/login', async (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
 
-    // Check for admin credentials first
-    if (email === 'website_admin' && password === 'admin_password') {
-      req.session.isAdmin = true;
-      req.session.role = 'website_admin';
-      return res.status(200).send({ success: true, isAdmin: true, role: 'website_admin' });
-    } else if (email === 'product_manager' && password === 'manager_password') {
-      req.session.isAdmin = true;
-      req.session.role = 'product_manager';
-      return res.status(200).send({ success: true, isAdmin: true, role: 'product_manager' });
-    }
+    // // Check for admin credentials first
+    // if (email === 'website_admin' && password === 'admin_password') {
+    //   req.session.isAdmin = true;
+    //   req.session.role = 'website_admin';
+    //   return res.status(200).send({ success: true, isAdmin: true, role: 'website_admin' });
+    // } else if (email === 'product_manager' && password === 'manager_password') {
+    //   req.session.isAdmin = true;
+    //   req.session.role = 'product_manager';
+    //   return res.status(200).send({ success: true, isAdmin: true, role: 'product_manager' });
+    // }
 
     // If not admin, check user credentials
     const userData = await database.getUserByEmail(email);
@@ -395,25 +451,143 @@ app.post('/login', async (req, res, next) => {
     req.session.justLoggedIn = true;
     req.session.role = 'user';
 
-    await database.logActivity(
-      userData.id,
-      'SUCCESS',
-      'Login',
-      `[Login Success] Email: ${userData.emailAddress}`,
-      req.session.role
-    );
-
+    // check if user is admin
+    if (userData.isAdmin) {
+      req.session.isAdmin = true;
+      req.session.role = 'admin';
+      // log admin login activity
+      await database.logActivity(
+        userData.id,
+        'SUCCESS',
+        'Login',
+        `[Login Success] Email: ${userData.emailAddress}`,
+        req.session.role
+      );
+    } else {
+      await database.logActivity(
+        userData.id,
+        'SUCCESS',
+        'Login',
+        `[Login Success] Email: ${userData.emailAddress}`,
+        req.session.role
+      );
+    }
     res.status(200).send({ success: true, isAdmin: false, role: 'user' });
   } catch (err) {
     next(err); // Pass the error to the generic error handler
   }
 });
 
-app.get('/add-movie', (req, res) => {
+// Route to create an admin account
+app.get('/create-admin', async (req, res) => {
+  try {
+    // Hardcoded admin credentials
+    const firstName = 'Admin';
+    const lastName = 'User';
+    const emailAddress = 'webadmin@eduksine.com';
+    const password = 'securepassword123';
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Add the admin account
+    await database.addUserWRecovery(
+      firstName,
+      lastName,
+      emailAddress,
+      hashedPassword,
+      'admin', // Role: admin
+      null, // No security question
+      null  // No recovery answer
+    );
+
+    console.log('Admin account created successfully!');
+    res.render('admin-created', {
+      title: 'Admin Account Created',
+      message: 'The admin account has been successfully created.',
+    });
+  } catch (error) {
+    console.error('Error creating admin account:', error);
+    res.status(500).render('handling', {
+      title: 'Error',
+      body: 'Failed to create admin account. Please try again later.',
+    });
+  }
+});
+
+// Route to create a product manager account
+app.post('/create-pm', async (req, res) => {
+  try {
+    // Hardcoded admin credentials
+    const firstName = 'ProdMngr';
+    const lastName = 'User';
+    const emailAddress = 'productmanager@eduksine.com';
+    const password = 'securepassword321';
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Add the product manager account
+    await database.addUserWRecovery(
+      firstName,
+      lastName,
+      emailAddress,
+      hashedPassword,
+      'product_manager', // Role: product manager
+      null, // No security question
+      null  // No recovery answer
+    );
+
+    await database.logActivity(
+      '',
+      'SUCCESS',
+      'Register',
+      `[Register Success] Email: ${emailAddress} IP: ${req.ip}`,
+      'product_manager',
+    );
+
+    // Reuse the admin-created.hbs template
+    res.render('admin-created', {
+      title: 'Product Manager Account Created',
+      message: 'The product manager account has been successfully created.',
+    });
+  } catch (error) {
+    await database.logActivity(
+      '',
+      'FAIL',
+      'Register',
+      `[Register Fail] Email: ${req.body.emailAddress} IP: ${req.ip}`,
+      'product_manager',
+    );
+    console.error('Error creating product manager account:', error);
+    res.status(500).render('handling', {
+      title: 'Error',
+      body: 'Failed to create product manager account. Please try again later.',
+    });
+  }
+});
+
+app.get('/add-movie', async (req, res) => {
   //res.render('add-movie');
 
-  if(req.session.isAdmin) {
-    res.render('add-movie')
+//   if(req.session.isAdmin) {
+//     res.render('add-movie')
+//   } else {
+//     res.status(401).render('handling', { title: 'Unauthorized Access', body: 'You are not authorized to access this page.' });
+//   }
+// })
+  if (req.session.isAdmin) {
+    await database.logActivity(
+      req.session.userId,
+      'FAILED',
+      'Add Movie',
+      `[Unauthorized Access] Email: ${req.session.emailAddress} IP: ${req.ip}`,
+      req.session.role,
+    );
+    return res.status(403).render('handling', {
+      title: 'Unauthorized Access',
+      body: 'Admins cannot add movies.',
+    });
   } else {
     res.status(401).render('handling', { title: 'Unauthorized Access', body: 'You are not authorized to access this page.' });
   }
@@ -439,43 +613,6 @@ app.get('/getRows', async (req, res) => {
 
 app.use('/', accountRoutes);
 app.use('/', movieRoutes);
-
-app.get('/add-account', async (req, res) => {
-  if(req.session.isAdmin) {
-    res.render('add-account', { header: 'Add An Account' })
-  } else {
-    res.status(401).render('handling', { title: 'Unauthorized Access', body: 'You are not authorized to access this page.' });
-  }
-});
-
-// Route to render edit-account form
-app.get('/edit-account/:id', async (req, res) => {
-  if(req.session.isAdmin) {
-  const userId = req.params.id;
-    try {
-      // Fetch user data from the database
-      const user = await database.getUserById(userId);
-
-      if (user) {
-          // Render the edit-account template with the user data
-          res.render('edit-account', {
-              id: user.id,
-              firstName: user.firstName,
-              lastName: user.lastName,
-              emailAddress: user.emailAddress,
-              isAdmin: user.isAdmin
-          });
-      } else {
-          res.status(404).send('User not found');
-      }
-    } catch (error) {
-        console.error('Error fetching user data:', error);
-        res.status(500).send('Error fetching user data');
-    }
-  } else {
-    res.status(401).render('handling', { title: 'Unauthorized Access', body: 'You are not authorized to access this page.' });
-  }
-});
 
 app.get('/browse', async (req, res) => {
   try {
@@ -554,7 +691,6 @@ app.get('/about-us', (req, res) => {
 })
 
 app.get('/check-user', async (req, res) => {
-
   try {
     const userData = await database.getUserByEmail(req.query.email)
 
@@ -653,7 +789,6 @@ app.get('/validate-user', async (req, res) => {
   }
 });
 
-
 app.get('/logout', (req, res) => {
   // Destroy the session
   req.session.destroy((err) => {
@@ -708,18 +843,31 @@ app.post('/register', async (req, res) => {
     }
 });
 
-// app.use((req, res) => {
-//   res.status(401).render('handling', { title: 'Page Not Found', body: 'Error 404. Page not found.' });
-// });
-app.use((req, res) => {
+app.use(async (req, res) => {
+  // log the 404 error using the logActivity function
+  await database.logActivity(
+    req.session.userId || null,
+    'ERROR',
+    '404 Not Found',
+    `[404 Error] URL: ${req.originalUrl} IP: ${req.ip}`,
+    req.session.role || 'guest',
+  );
+  
   res.status(404).render('handling', {
     title: 'Page Not Found',
     body: 'Error 404: The page you are looking for does not exist.',
   });
 });
 
-app.use((err, req, res, next) => {
-  console.error('Error:', err.stack); // Log the error for debugging
+app.use(async (err, req, res, next) => {
+  // log the error details using the logActivity function
+  await database.logActivity(
+    req.session.userId || null,
+    'ERROR',
+    'Server Error',
+    `[Error] ${err.message} IP: ${req.ip}`,
+    req.session.role || 'guest',
+  );
 
   // Render a custom error page
   res.status(err.status || 500).render('handling', {
