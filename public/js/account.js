@@ -49,21 +49,49 @@ account.post('/change-password', async (req, res) => {
     for (let i = 0; i < password_list.length; i++) {
       const isSame = await bcrypt.compare(password, password_list[i].password);
       if (isSame) {
+        await database.logActivity(
+          '',
+          'FAIL',
+          'Recover Password',
+          `[Password Reuse] Email: ${email} IP: ${req.ip}`,
+          '',
+        );
         return res.status(400).json({ message: 'Incorrect input/s. Please try again.' });
       }
     }
 
     const passwordAge = await database.getPasswordAge(newUser.id);
     if (passwordAge < 1) {
+      await database.logActivity(
+        '',
+        'FAIL',
+        'Recover Password',
+        `[Password Change Too Recent] Email: ${email} IP: ${req.ip}`,
+        '',
+      );
       return res.status(400).json({ message: 'The last password change was fairly new. Please try again in a day.' });
     }
 
     await database.changePassword(email, hashedPassword);
     await database.addPasswordHistory(newUser.id, hashedPassword);
+    await database.logActivity(
+      '',
+      'SUCCESS',
+      'Recover Password',
+      `[Password Change Success] Email: ${email} IP: ${req.ip}`,
+      '',
+    );
     res.status(200).send('Success updating data');
     
   } catch (err) {
     console.error('Error inserting data:', err.stack);
+    await database.logActivity(
+      '',
+      'FAIL',
+      'Recover Password',
+      `[Password Change Error] Email: ${email} IP: ${req.ip}`,
+      '',
+    );
     res.status(500).send('Error updating data');
   }
 });
@@ -81,22 +109,50 @@ account.post('/change-password-user', async (req, res) => {
     for (let i = 0; i < password_list.length; i++) {
       const isSame = await bcrypt.compare(newPassword, password_list[i].password);
       if (isSame) {
+        await database.logActivity(
+          req.session.userId,
+          'FAIL',
+          'Change Password',
+          `[Password Reuse] Email: ${email} IP: ${req.ip}`,
+          req.session.role,
+        );
         return res.status(400).json({ message: 'You cannot reuse old passwords.' });
       }
     }
 
     const passwordAge = await database.getPasswordAge(newUser.id);
     if (passwordAge < 1) {
+      await database.logActivity(
+        req.session.userId,
+        'FAIL',
+        'Change Password',
+        `[Password Change Too Recent] Email: ${email} IP: ${req.ip}`,
+        req.session.role,
+      );
       return res.status(400).json({ message: 'The last password change was fairly new. Please try again in a day.' });
     }
 
     await database.changePassword(email, hashedPassword);
     await database.addPasswordHistory(newUser.id, hashedPassword);
+    await database.logActivity(
+      req.session.userId,
+      'SUCCESS',
+      'Change Password',
+      `[Password Change Success] Email: ${email} IP: ${req.ip}`,
+      req.session.role,
+    );
     res.status(200).send('Success updating data');
     req.session.destroy();
     
   } catch (err) {
     console.error('Error inserting data:', err.stack);
+    await database.logActivity(
+      req.session.userId,
+      'FAIL',
+      'Change Password',
+      `[Password Change Error] Email: ${email} IP: ${req.ip}`,
+      req.session.role,
+    );
     res.status(500).send('Error updating data');
   }
 });

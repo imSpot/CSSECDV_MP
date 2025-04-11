@@ -97,28 +97,75 @@ document.addEventListener('DOMContentLoaded', () => {
         const recoveryAnswer = data.recoveryAnswer.trim();
         const recoveryQuestion = data.recoveryQuestion.trim();
 
+        if(emailAddress.length == 0) {
+            alert('Please enter an email address.');
+            $.post('/log-activity', {
+                userId: '',
+                status: 'FAIL',
+                action: 'Recover Password',
+                details: '[Provided No Email]',
+                role: ''
+            });
+            return;
+        }
+
         if(emailAddress.length > 37) {
             alert('Email address should not exceed 37 characters.');
+            $.post('/log-activity', {
+                userId: '',
+                status: 'FAIL',
+                action: 'Recover Password',
+                details: '[Invalid Email Length] Email: ' + emailAddress,
+                role: ''
+            });
             return;
         }
 
         if((password === confirmPassword) == false) {
             alert('Passwords do not match.');
+            $.post('/log-activity', {
+                userId: '',
+                status: 'FAIL',
+                action: 'Recover Password',
+                details: '[Passwords Do Not Match] Email: ' + emailAddress,
+                role: ''
+            });
             return;
         }
 
         if(password.length < 8) {
             alert('New password should be at least 8 characters long.');
+            $.post('/log-activity', {
+                userId: '',
+                status: 'FAIL',
+                action: 'Recover Password',
+                details: '[Password Length Not Met] Email: ' + emailAddress,
+                role: ''
+            });
             return;
         }
 
         if(password.length > 60) {
             alert('New password should not exceed 60 characters.');
+            $.post('/log-activity', {
+                userId: '',
+                status: 'FAIL',
+                action: 'Recover Password',
+                details: '[Password Length Exceeded] Email: ' + emailAddress,
+                role: ''
+            });
             return;
         }
 
         if(!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/)) {
             alert('New password needs at least one uppercase letter, one lowercase letter, one number, and one special character.');
+            $.post('/log-activity', {
+                userId: '',
+                status: 'FAIL',
+                action: 'Recover Password',
+                details: '[Password Complexity Not Met] Email: ' + emailAddress,
+                role: ''
+            });
             return;
         }
 

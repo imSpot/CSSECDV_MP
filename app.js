@@ -521,6 +521,23 @@ app.post('/place-order', async (req, res) => {
   }
 });
 
+app.post('/log-activity', async (req, res) => {
+  try {
+    let {userId, status, action, details, role} = req.body;
+
+    if (req.session.userId) {
+      userId = req.session.userId;
+      role = req.session.role;
+    }
+
+    await database.logActivity(userId, status, action, details, role);
+    res.json({ success: true, message: 'Activity logged successfully' });
+  } catch (error) {
+    console.error('Logging error:', error);
+    res.status(500).json({ success: false, message: 'Failed to log activity' });
+  }
+});
+
 app.get('/user-orders', async (req, res) => {
   try {
     const userId = req.session.userId;
@@ -580,10 +597,24 @@ app.get('/validate-recovery-info', async (req, res) => {
   try {
     const userData = await database.validateRecoveryInfo(req.query.email, req.query.securityQuestionID)
     if (!userData || !(await bcrypt.compare(securityQuestionAnswer, userData.securityQuestionAnswer))) {
+        await database.logActivity(
+          '',
+          'FAIL',
+          'Recover Password',
+          `[Invalid Credentials] Email: ${req.query.email} IP: ${req.ip}`,
+          '',
+        );
         res.status(200).send({ success: false, message: 'Invalid input/s. Try again.', exists: false });
         return;
     } else {
         res.status(200).send({ success: true, message: 'Valid input/s.', exists: true });
+        await database.logActivity(
+          '',
+          'SUCCESS',
+          'Recover Password',
+          `[Matching Credentials] Email: ${req.query.email} IP: ${req.ip}`,
+          '',
+        );
         return;
     }
   } catch (error) {
@@ -602,8 +633,22 @@ app.get('/validate-user', async (req, res) => {
     let userData = await database.getUserByEmail(email);
     if (!userData || !(await bcrypt.compare(password, userData.password))) {
         res.status(200).send({ success: false, message: 'Invalid username and/or password.', exists: false });
+        await database.logActivity(
+          req.session.userId,
+          'FAIL',
+          'Change Password',
+          `[Invalid Credentials] Email: ${req.query.email} IP: ${req.ip}`,
+          req.session.role,
+        );
         return;
     } else {
+        await database.logActivity(
+          req.session.userId,
+          'SUCCESS',
+          'Change Password',
+          `[Matching Credentials] Email: ${req.query.email} IP: ${req.ip}`,
+          req.session.role,
+        );
         res.status(200).send({ success: true, message: 'Valid input/s.', exists: true });
         return;
     }

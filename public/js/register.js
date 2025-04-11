@@ -72,66 +72,181 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if(!firstName.match(/^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/)) {
             alert('First name should only contain characters and spaces.');
+            $.post('/log-activity', {
+                userId: '',
+                status: 'FAIL',
+                action: 'Register',
+                details: '[First Name Complexity Not Met] Email: ' + emailAddress,
+                role: ''
+            });
             return;
         }
 
         if(!lastName.match(/^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/)) {
             alert('Last name should only contain characters and spaces.');
+            $.post('/log-activity', {
+                userId: '',
+                status: 'FAIL',
+                action: 'Register',
+                details: '[Last Name Complexity Not Met] Email: ' + emailAddress,
+                role: ''
+            });
+            return;
+        }
+
+        if(emailAddress.length == 0) {
+            alert('Please enter an email address.');
+            $.post('/log-activity', {
+                userId: '',
+                status: 'FAIL',
+                action: 'Register',
+                details: '[Provided No Email]',
+                role: ''
+            });
             return;
         }
 
         if(emailAddress.length > 37) {
             alert('Email address should not exceed 37 characters.');
+            $.post('/log-activity', {
+                userId: '',
+                status: 'FAIL',
+                action: 'Register',
+                details: '[Invalid Email Length] Email: ' + emailAddress,
+                role: ''
+            });
+            return;
+        }
+
+        if (!emailAddress.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+            alert('Please enter a valid email address.');
+            $.post('/log-activity', {
+                userId: '',
+                status: 'FAIL',
+                action: 'Register',
+                details: '[Invalid Email Structure] Email: ' + emailAddress,
+                role: ''
+            });
             return;
         }
 
         if(firstName.length < 2) {
             alert('First name should contain at least two characters.');
+            $.post('/log-activity', {
+                userId: '',
+                status: 'FAIL',
+                action: 'Register',
+                details: '[First Name Length Not Met] Email: ' + emailAddress,
+                role: ''
+            });
             return;
         }
 
         if(firstName.length > 30) {
             alert('First name should not exceed 30 characters.');
+            $.post('/log-activity', {
+                userId: '',
+                status: 'FAIL',
+                action: 'Register',
+                details: '[First Name Length Exceeded] Email: ' + emailAddress,
+                role: ''
+            });
             return;
         }
 
         if(lastName.length < 2) {
             alert('Last name should contain at least two characters.');
+            $.post('/log-activity', {
+                userId: '',
+                status: 'FAIL',
+                action: 'Register',
+                details: '[Last Name Length Not Met] Email: ' + emailAddress,
+                role: ''
+            });
             return;
         }
 
         if(lastName.length > 30) {
             alert('Last name should not exceed 30 characters.');
+            $.post('/log-activity', {
+                userId: '',
+                status: 'FAIL',
+                action: 'Register',
+                details: '[Last Name Length Exceeded] Email: ' + emailAddress,
+                role: ''
+            });
             return;
         }
 
         if((password === confirmPassword) == false) {
             alert('Passwords do not match.');
+            $.post('/log-activity', {
+                userId: '',
+                status: 'FAIL',
+                action: 'Register',
+                details: '[Passwords Do Not Match] Email: ' + emailAddress,
+                role: ''
+            });
             return;
         }
 
         if(password.length < 8) {
             alert('Password should be at least 8 characters long.');
+            $.post('/log-activity', {
+                userId: '',
+                status: 'FAIL',
+                action: 'Register',
+                details: '[Password Length Not Met] Email: ' + emailAddress,
+                role: ''
+            });
             return;
         }
 
         if(password.length > 60) {
             alert('Password should not exceed 60 characters.');
+            $.post('/log-activity', {
+                userId: '',
+                status: 'FAIL',
+                action: 'Register',
+                details: '[Password Length Exceeded] Email: ' + emailAddress,
+                role: ''
+            });
             return;
         }
 
         if(!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/)) {
             alert('Password needs at least one uppercase letter, one lowercase letter, one number, and one special character.');
+            $.post('/log-activity', {
+                userId: '',
+                status: 'FAIL',
+                action: 'Register',
+                details: '[Password Complexity Not Met] Email: ' + emailAddress,
+                role: ''
+            });
             return;
         }
 
         if(recoveryAnswer.length < 8) {
             alert('Recovery answer should be at least 8 characters long.');
+            $.post('/log-activity', {
+                userId: '',
+                status: 'FAIL',
+                action: 'Register',
+                details: '[Recovery Answer Length Not Met] Email: ' + emailAddress,
+                role: ''
+            });
             return;
         }
 
         if(recoveryAnswer.length > 30) {
             alert('Recovery answer should not exceed 30 characters.');
+            $.post('/log-activity', {
+                userId: '',
+                status: 'FAIL',
+                action: 'Register',
+                details: '[Recovery Answer Length Exceeded] Email: ' + emailAddress,
+                role: ''
+            });
             return;
         }
 
