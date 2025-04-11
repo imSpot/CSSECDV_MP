@@ -446,6 +446,21 @@ const database = {
             throw err;
         }
     },
+
+    logActivity: async (userId, status, action, details, role) => {
+        const newLogId = uuidv4();
+        const uid = userId || null; // Set to null if not provided
+        const roleAssigned = role || null; // Set to null if not provided
+        try {
+            await pool.query(`
+                INSERT INTO logs (id, userId, status, action, details, role)
+                VALUES (?, ?, ?, ?, ?, ?)
+            `, [newLogId, uid, status, action, details, roleAssigned]);
+        } catch (err) {
+            console.error('Error logging:', err);
+            throw err;
+        }
+    },
 }
 
 module.exports = {pool, database};

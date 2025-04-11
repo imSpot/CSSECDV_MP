@@ -186,31 +186,31 @@ app.get('/register', (req, res) => {
   res.render('register', { title: 'Sign Up - Eduksine' })
 })
 
-app.post('/register', async (req, res) => {
-  const { firstName, lastName, emailAddress, password, securityQuestionID, recoveryAnswer } = req.body;
+// app.post('/register', async (req, res) => {
+//   const { firstName, lastName, emailAddress, password, securityQuestionID, recoveryAnswer } = req.body;
 
-  try {
-      // Hash password and recovery answer
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const hashedRecoveryAnswer = await bcrypt.hash(recoveryAnswer, 10);
+//   try {
+//       // Hash password and recovery answer
+//       const hashedPassword = await bcrypt.hash(password, 10);
+//       const hashedRecoveryAnswer = await bcrypt.hash(recoveryAnswer, 10);
 
-      // Create user with security info
-      await database.addUserWRecovery(
-          firstName,
-          lastName,
-          emailAddress,
-          hashedPassword,
-          'user', // Default type for regular users
-          securityQuestionID,
-          hashedRecoveryAnswer
-      );
+//       // Create user with security info
+//       await database.addUserWRecovery(
+//           firstName,
+//           lastName,
+//           emailAddress,
+//           hashedPassword,
+//           'user', // Default type for regular users
+//           securityQuestionID,
+//           hashedRecoveryAnswer
+//       );
 
-      res.status(200).json({ success: true });
-  } catch (error) {
-      console.error('Registration error:', error);
-      res.status(500).json({ success: false, message: 'Error adding user' });
-  }
-});
+//       res.status(200).json({ success: true });
+//   } catch (error) {
+//       console.error('Registration error:', error);
+//       res.status(500).json({ success: false, message: 'Error adding user' });
+//   }
+// });
 
 app.get('/recovery', (req, res) => {
   req.session.destroy()
@@ -312,14 +312,19 @@ app.post('/login', async (req, res, next) => {
     // If not admin, check user credentials
     const userData = await database.getUserByEmail(email);
 
+    
     if (!userData) {
+      await database.logActivity(
+        '',
+        'FAILED',
+        'Login',
+        `[Wrong Credentials] IP: ${req.ip}`,
+        '',
+      );
       return res.status(401).send({ success: false, message: 'Invalid username and/or password' });
     }
 
-    if (!(await bcrypt.compare(password, userData.password))) {
-      const failedLoginAttempts = userData.failedLoginAttempts + 1;
-      const lastLoginFail = new Date();
-      const accountLockedUntil = userData.accountLockedUntil
+    const accountLockedUntil = userData.accountLockedUntil
         ? new Date(userData.accountLockedUntil).toLocaleString('en-US', {
             year: 'numeric',
             month: '2-digit',
@@ -331,18 +336,56 @@ app.post('/login', async (req, res, next) => {
           })
         : null;
 
+    if (!(await bcrypt.compare(password, userData.password))) {
+      const failedLoginAttempts = userData.failedLoginAttempts + 1;
+      const lastLoginFail = new Date();
+      
+
       if (userData.accountLockedUntil && userData.accountLockedUntil > Date.now()) {
+        await database.logActivity(
+          userData.id,
+          'FAILED',
+          'Login',
+          `[Trying to Access Locked Account] Email: ${userData.emailAddress} IP: ${req.ip}`,
+          'user',
+        );
         return res.status(401).send({ message: `Login is locked until ${accountLockedUntil}` });
       }
 
       if (failedLoginAttempts >= 5) {
         const lockUntil = new Date(Date.now() + 15 * 60 * 1000); // Lock for 15 minutes
         await database.recordFailedLoginAttempt(userData.emailAddress, 0, lastLoginFail, lockUntil);
+        await database.logActivity(
+          userData.id,
+          'FAILED',
+          'Login',
+          `[Locking Account] Email: ${userData.emailAddress} IP: ${req.ip}`,
+          'user',
+        );
         return res.status(401).send({ success: false, message: 'Too many failed login attempts. Login will be blocked for 15 minutes.' });
       } else {
         await database.recordFailedLoginAttempt(userData.emailAddress, failedLoginAttempts, lastLoginFail, null);
+        await database.logActivity(
+          userData.id,
+          'FAILED',
+          'Login',
+          `[Invalid Credentials] Email: ${userData.emailAddress} IP: ${req.ip}`,
+          'user',
+        );
         return res.status(401).send({ success: false, message: 'Invalid username and/or password' });
       }
+    }
+
+    // If credentials are right but user is locked out
+    if (userData.accountLockedUntil && userData.accountLockedUntil > Date.now()) {
+      await database.logActivity(
+        userData.id,
+        'FAILED',
+        'Login',
+        `[Trying to Access Locked Account] Email: ${userData.emailAddress} IP: ${req.ip}`,
+        'user',
+      );
+      return res.status(401).send({ message: `Login is locked until ${accountLockedUntil}` });
     }
 
     // User authentication successful
@@ -357,6 +400,14 @@ app.post('/login', async (req, res, next) => {
       SET lastLoginInteraction = NOW() 
       WHERE id = ?
     `, [userData.id]);
+
+    await database.logActivity(
+      userData.id,
+      'SUCCESS',
+      'Login',
+      `[Login Success] Email: ${userData.emailAddress}`,
+      req.session.role
+    );
 
     res.status(200).send({ success: true, isAdmin: false, role: 'user' });
   } catch (err) {
@@ -497,8 +548,22 @@ app.get('/check-user', async (req, res) => {
     const userData = await database.getUserByEmail(req.query.email)
 
     if(userData) {
+      await database.logActivity(
+        '',
+        'FAIL',
+        'Register',
+        `[Email Already Exists] Requested Email: ${req.query.email} IP: ${req.ip}`,
+        'user',
+      );
       res.status(200).json({ exists : true })
     } else {
+      await database.logActivity(
+        '',
+        'SUCCESS',
+        'Register',
+        `[Email Available] Requested Email: ${req.query.email} IP: ${req.ip}`,
+        'user',
+      );
       res.status(200).json({ exists : false })
     }
   } catch (error) {
@@ -564,7 +629,7 @@ app.get('/logout', (req, res) => {
 });
 
 app.post('/register', async (req, res) => {
-    const { firstName, lastName, emailAddress, password, securityQuestionID, recoveryAnswer } = req.body;
+    const { firstName, lastName, emailAddress, password, recoveryQuestion, recoveryAnswer } = req.body;
 
     try {
         // Hash password and recovery answer
@@ -578,13 +643,28 @@ app.post('/register', async (req, res) => {
             emailAddress,
             hashedPassword,
             'user', // Default type for regular users
-            securityQuestionID,
+            recoveryQuestion,
             hashedRecoveryAnswer
         );
 
+        const newUser = await database.getUserByEmail(emailAddress);
+        await database.addPasswordHistory(newUser.id, hashedPassword);
+        await database.logActivity(
+            newUser.id,
+            'SUCCESS',
+            'Register',
+            `[Register Success] Email: ${newUser.emailAddress} IP: ${req.ip}`,
+            'user',
+        );
         res.status(200).json({ success: true });
     } catch (error) {
-        console.error('Registration error:', error);
+        await database.logActivity(
+            '',
+            'FAIL',
+            'Register',
+            `[Register Fail] Email: ${emailAddress} IP: ${req.ip}`,
+            'user',
+          );
         res.status(500).json({ success: false, message: 'Error adding user' });
     }
 });
