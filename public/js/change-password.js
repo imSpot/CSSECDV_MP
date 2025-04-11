@@ -106,16 +106,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        if(password.length < 8) {
-            alert('Password should be at least 8 characters long.');
-            return;
-        }
-
-        if(password.length > 60) {
-            alert('Password should not exceed 60 characters.');
-            return;
-        }
-
         if(newPassword.length < 8) {
             alert('New password should be at least 8 characters long.');
             return;
@@ -123,6 +113,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if(newPassword.length > 60) {
             alert('New password should not exceed 60 characters.');
+            return;
+        }
+
+        if(!newPassword.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/)) {
+            alert('New password needs at least one uppercase letter, one lowercase letter, one number, and one special character.');
             return;
         }
 

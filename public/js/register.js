@@ -120,6 +120,11 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        if(!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/)) {
+            alert('Password needs at least one uppercase letter, one lowercase letter, one number, and one special character.');
+            return;
+        }
+
         if(recoveryAnswer.length < 8) {
             alert('Recovery answer should be at least 8 characters long.');
             return;

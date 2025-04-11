@@ -108,22 +108,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if(password.length < 8) {
-            alert('Password should be at least 8 characters long.');
+            alert('New password should be at least 8 characters long.');
             return;
         }
 
         if(password.length > 60) {
-            alert('Password should not exceed 60 characters.');
+            alert('New password should not exceed 60 characters.');
             return;
         }
 
-        if(recoveryAnswer.length < 8) {
-            alert('Recovery answer should be at least 8 characters long.');
-            return;
-        }
-
-        if(recoveryAnswer.length > 30) {
-            alert('Recovery answer should not exceed 30 characters.');
+        if(!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/)) {
+            alert('New password needs at least one uppercase letter, one lowercase letter, one number, and one special character.');
             return;
         }
 

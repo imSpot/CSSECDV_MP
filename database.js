@@ -330,7 +330,6 @@ const database = {
         const connection = await pool.getConnection();
         await connection.beginTransaction();
         
-        console.log(password, emailAddress);
         try {
             // Update user details
             await connection.query(`
