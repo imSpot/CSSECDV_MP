@@ -95,7 +95,7 @@ app.get('/', async (req, res) => {
       if (req.session.justLoggedIn) {
         res.render('main', { 
           images: carouselMovies, 
-          welcomeMessage: `Welcome back! Last login: ${lastLoginInteraction}`
+          welcomeMessage: `Welcome back! Last login attempt: ${lastLoginInteraction}`
         });
         await database.resetFailedLoginAttempt(userData.emailAddress);
         req.session.justLoggedIn = false;
