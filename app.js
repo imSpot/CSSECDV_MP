@@ -9,6 +9,7 @@ const bcrypt = require('bcrypt')
 const mysql = require('mysql2')
 const dotenv = require('dotenv')
 const {pool, database} = require('./database.js')
+// const {pool, database, logEvent} = require('./database.js')
 const multer = require('multer');
 const accountRoutes = require('./public/js/account.js')
 const movieRoutes = require('./public/js/movie.js');
@@ -26,7 +27,6 @@ app.use(express.static('public')) // Sets the public folder as the default locat
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
 app.engine('.hbs', exphbs.engine({ extname: '.hbs', defaultLayout: 'main'}))
 app.set('view engine', '.hbs')
 app.use(express.static(__dirname));
@@ -233,66 +233,68 @@ app.get('/login', (req, res) => {
   res.render('login')
 })
 
-// app.post('/login', async (req, res) => {
-//   const email = req.body.email;
-//   const password = req.body.password;
+// first old
+app.post('/login', async (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
 
-//   // Check for admin credentials first
-//   if (email === 'website_admin' && password === 'admin_password') { // Replace with actual admin credentials
-//       req.session.isAdmin = true;
-//       req.session.role = 'website_admin';
-//       res.status(200).send({ success: true, isAdmin: true, role: 'website_admin' });
-//       return;
-//   } else if (email === 'product_manager' && password === 'manager_password') { // Replace with actual manager credentials
-//       req.session.isAdmin = true;
-//       req.session.role = 'product_manager';
-//       res.status(200).send({ success: true, isAdmin: true, role: 'product_manager' });
-//       return;
-//   }
+  // Check for admin credentials first
+  if (email === 'website_admin' && password === 'admin_password') { // Replace with actual admin credentials
+      req.session.isAdmin = true;
+      req.session.role = 'website_admin';
+      res.status(200).send({ success: true, isAdmin: true, role: 'website_admin' });
+      return;
+  } else if (email === 'product_manager' && password === 'manager_password') { // Replace with actual manager credentials
+      req.session.isAdmin = true;
+      req.session.role = 'product_manager';
+      res.status(200).send({ success: true, isAdmin: true, role: 'product_manager' });
+      return;
+  }
 
-//   // If not admin, check user credentials
-//   let userData = await database.getUserByEmail(email);
+  // If not admin, check user credentials
+  let userData = await database.getUserByEmail(email);
 
-//   if (!userData) {
-//     res.status(401).send({ success: false, message: 'Invalid username and/or password' });
-//     return;
-//   }
+  if (!userData) {
+    res.status(401).send({ success: false, message: 'Invalid username and/or password' });
+    return;
+  }
 
-//   if (userData && !(await bcrypt.compare(password, userData.password))) {
-//     const failedLoginAttempts = userData.failedLoginAttempts + 1;
-//     const lastLoginFail = new Date();
-//     const accountLockedUntil = new Date(userData.accountLockedUntil).toLocaleTimeString();
+  if (userData && !(await bcrypt.compare(password, userData.password))) {
+    const failedLoginAttempts = userData.failedLoginAttempts + 1;
+    const lastLoginFail = new Date();
+    const accountLockedUntil = new Date(userData.accountLockedUntil).toLocaleTimeString();
 
-//     if (userData.accountLockedUntil && userData.accountLockedUntil > lastLoginFail) {
-//       res.status(401).send({message:`Login is locked until ${accountLockedUntil}`});
-//       return;
-//     }
-//     if (failedLoginAttempts >= 5) {
-//       await database.recordFailedLoginAttempt(userData.emailAddress, 0, lastLoginFail, new Date(Date.now() + 15 * 60 * 1000));
-//       res.status(401).send({ success: false, message: 'Too many failed login attempts. Login will be blocked for 15 minutes.' });
-//     } else {
-//       await database.recordFailedLoginAttempt(userData.emailAddress, failedLoginAttempts, lastLoginFail, null);
-//       res.status(401).send({ success: false, message: 'Invalid username and/or password' });   
-//     }
-//     return;
-//   }
+    if (userData.accountLockedUntil && userData.accountLockedUntil > lastLoginFail) {
+      res.status(401).send({message:`Login is locked until ${accountLockedUntil}`});
+      return;
+    }
+    if (failedLoginAttempts >= 5) {
+      await database.recordFailedLoginAttempt(userData.emailAddress, 0, lastLoginFail, new Date(Date.now() + 15 * 60 * 1000));
+      res.status(401).send({ success: false, message: 'Too many failed login attempts. Login will be blocked for 15 minutes.' });
+    } else {
+      await database.recordFailedLoginAttempt(userData.emailAddress, failedLoginAttempts, lastLoginFail, null);
+      res.status(401).send({ success: false, message: 'Invalid username and/or password' });   
+    }
+    return;
+  }
 
-//   // User authentication successful
-//   req.session.isAdmin = false;
-//   req.session.userId = userData.id;
-//   req.session.justLoggedIn = true;
-//   req.session.role = 'user';
+  // User authentication successful
+  req.session.isAdmin = false;
+  req.session.userId = userData.id;
+  req.session.justLoggedIn = true;
+  req.session.role = 'user';
 
-//   // Add this update to record login time
-//   await pool.query(`
-//     UPDATE users 
-//     SET lastLoginInteraction = NOW() 
-//     WHERE id = ?
-//   `, [userData.id]);
+  // Add this update to record login time
+  await pool.query(`
+    UPDATE users 
+    SET lastLoginInteraction = NOW() 
+    WHERE id = ?
+  `, [userData.id]);
 
-//   res.status(200).send({ success: true, isAdmin: false, role: 'user' });
-// });
+  res.status(200).send({ success: true, isAdmin: false, role: 'user' });
+});
 
+// second modified
 app.post('/login', async (req, res, next) => {
   try {
     const email = req.body.email;
@@ -364,11 +366,128 @@ app.post('/login', async (req, res, next) => {
   }
 });
 
+// current
+// app.post('/login', async (req, res, next) => {
+//   try {
+//     const email = req.body.email;
+//     const password = req.body.password;
+
+//     // Check for admin credentials
+//     const userData = await database.getUserByEmail(email);
+
+//     if (!userData) {
+//       // Log invalid username attempt
+//       logEvent('Authentication Failure', `Invalid username: ${email}`);
+//       return res.status(401).send({ success: false, message: 'Invalid username and/or password' });
+//     }
+
+//     // Check if the account is locked
+//     const accountLockedUntil = userData.accountLockedUntil
+//       ? new Date(userData.accountLockedUntil).toLocaleString('en-US', {
+//           year: 'numeric',
+//           month: '2-digit',
+//           day: '2-digit',
+//           hour: '2-digit',
+//           minute: '2-digit',
+//           second: '2-digit',
+//           hour12: false,
+//         })
+//       : null;
+
+//     if (userData.accountLockedUntil && userData.accountLockedUntil > Date.now()) {
+//       logEvent('Authentication Failure', `Account locked for user: ${email}`);
+//       return res.status(401).send({ message: `Login is locked until ${accountLockedUntil}` });
+//     }
+
+//     // Verify password
+//     if (!(await bcrypt.compare(password, userData.password))) {
+//       const failedLoginAttempts = userData.failedLoginAttempts + 1;
+//       const lastLoginFail = new Date();
+
+//       // Lock account after 5 failed attempts
+//       if (failedLoginAttempts >= 5) {
+//         const lockUntil = new Date(Date.now() + 15 * 60 * 1000); // Lock for 15 minutes
+//         await database.recordFailedLoginAttempt(userData.emailAddress, 0, lastLoginFail, lockUntil);
+//         logEvent('Authentication Failure', `Account locked for user: ${email} due to too many failed attempts`);
+//         return res.status(401).send({ success: false, message: 'Too many failed login attempts. Login will be blocked for 15 minutes.' });
+//       } else {
+//         await database.recordFailedLoginAttempt(userData.emailAddress, failedLoginAttempts, lastLoginFail, null);
+//         logEvent('Authentication Failure', `Invalid password for user: ${email}`);
+//         return res.status(401).send({ success: false, message: 'Invalid username and/or password' });
+//       }
+//     }
+
+//     // Reset failed login attempts on successful login
+//     await database.resetFailedLoginAttempt(userData.emailAddress);
+
+//     // Check user type and redirect accordingly
+//     if (userData.type === 'admin') {
+//       req.session.isAdmin = true;
+//       req.session.userId = userData.id;
+//       logEvent('Authentication Success', `Admin logged in: ${email}`);
+//       return res.redirect('/admin-logs');
+//     }
+
+//     // User authentication successful
+//     req.session.isAdmin = false;
+//     req.session.userId = userData.id;
+//     logEvent('Authentication Success', `User logged in: ${email}`);
+//     res.redirect('/');
+//   } catch (err) {
+//     next(err);
+//   }
+// });
+
+// temporary route for add-admin
+app.get('/add-admin', async (req, res) => {
+  try {
+    const hashedPassword = await bcrypt.hash('adm/1597532486!', 10); // Replace with your desired password
+    await database.addUser(
+      '1', // ID
+      'Admin', // First name
+      'Admin', // Last name
+      'webadmin@eduksine.com', // Email address
+      hashedPassword, // Hashed password
+      '1', // isActive
+      'PHP', // Currency
+      null, // emailAddressVerifiedAt
+      null, // createdAt
+      // 'admin', // User type
+      // 0, // Failed login attempts
+      // null, // Last login fail
+      // null, // Account locked until
+      // null, // Last login interaction
+      // null, // Security question ID
+      // null, // Security question answer
+      // null // Recovery answer
+    );
+    res.render('add-admin', {
+      title: 'Admin Account Created',
+      body: 'The admin account has been successfully created.',
+    });
+  } catch (error) {
+    console.error('Error creating admin account:', error);
+    res.status(500).render('handling', {
+      title: 'Error Creating Admin Account',
+      body: 'Failed to create the admin account. Please try again later.',
+    });
+  }
+});
+
 app.get('/add-movie', (req, res) => {
+  // previous code
   //res.render('add-movie');
 
-  if(req.session.isAdmin) {
-    res.render('add-movie')
+  // if(req.session.isAdmin) {
+  //   res.render('add-movie')
+  // } else {
+
+  if (req.session.isAdmin) {
+    logEvent('Access Control Failure', 'Admin attempted to access add-movie page');
+    return res.status(403).render('handling', {
+      title: 'Unauthorized Access',
+      body: 'Admins cannot add movies.',
+    });
   } else {
     res.status(401).render('handling', { title: 'Unauthorized Access', body: 'You are not authorized to access this page.' });
   }
@@ -391,6 +510,28 @@ app.get('/getRows', async (req, res) => {
   /*const rows = await database.getRows(req.query.table)
   res.json(rows)*/
 })
+
+// Route for Admin Logs
+app.get('/admin-logs', async (req, res) => {
+  if (!req.session.isAdmin) {
+    logEvent('Access Control Failure', 'Unauthorized access to admin logs');
+    return res.status(403).render('handling', {
+      title: 'Unauthorized Access',
+      body: 'You are not authorized to access this page.',
+    });
+  }
+
+  try {
+    const logs = await database.getLogs(); // Fetch logs from the database
+    res.render('admin-logs', { title: 'Admin Logs', logs });
+  } catch (error) {
+    console.error('Error fetching logs:', error);
+    res.status(500).render('handling', {
+      title: 'Error',
+      body: 'Failed to fetch logs. Please try again later.',
+    });
+  }
+});
 
 app.use('/', accountRoutes);
 app.use('/', movieRoutes);
@@ -446,8 +587,12 @@ app.get('/orders' , async (req, res) => {
   res.render('orders')
 });
 
-// Add to app.js
 app.post('/place-order', async (req, res) => {
+  if (req.session.isAdmin) {
+    logEvent('Access Control Failure', 'Admin attempted to place an order');
+    return res.status(403).json({ success: false, message: 'Admins cannot place orders' });
+  }
+
   try {
     const userId = req.session.userId;
     const { movieId } = req.body;

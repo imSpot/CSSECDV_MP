@@ -28,7 +28,7 @@ body {
     display: flex;
     justify-content: center;
     width: 100%;
-    margin-bottom: 20px; /* Add some spacing between the search bar and the table */
+    margin-bottom: 20px;
 }
 
 #container-search {
@@ -38,14 +38,14 @@ body {
 }
 
 #search-bar {
-    width: 100%; /* Adjust the width as needed */
+    width: 100%;
 }
 
 #container-table {
     align-content: center;
-    height: 300px; /* Adjust this value to your desired height */
+    height: 300px;
     width: 50vw;
-    overflow: auto; /* Add scrollbars if the table content exceeds the container's height */
+    overflow: auto;
 }
 
 #container-table p {
@@ -67,11 +67,40 @@ body {
     margin-right: 10px;
 }
 
-
 table, th, td {
-    border: 1px solid white; /* Add a 1px solid white border to the table, headers, and cells */
+    border: 1px solid white;
 }
 
 .hide {
     visibility: hidden;
 }
+
+/* body {
+    font-family: Arial, sans-serif;
+    background-color: black;
+    color: white;
+}
+
+#logs-container {
+    margin: 20px auto;
+    width: 80%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid white;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #333;
+}
+
+tr:nth-child(even) {
+    background-color: #444;
+} */
