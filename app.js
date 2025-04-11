@@ -68,7 +68,7 @@ app.get('/', async (req, res) => {
     const carouselMovies = await database.searchFilmforCarousel();
     
     // Use the user data from middleware instead of querying again
-    const userData = res.locals.user;
+    const userData = await database.getUserById(req.session.userId);
 
     if (userData) {
       // Handle logged-in user flow
@@ -93,12 +93,13 @@ app.get('/', async (req, res) => {
       }
       
       if (req.session.justLoggedIn) {
-        await database.resetFailedLoginAttempt(userData.emailAddress);
-        req.session.justLoggedIn = false;
-        return res.render('main', { 
+        res.render('main', { 
           images: carouselMovies, 
           welcomeMessage: `Welcome back! Last login: ${lastLoginInteraction}`
         });
+        await database.resetFailedLoginAttempt(userData.emailAddress);
+        req.session.justLoggedIn = false;
+        return;
       }
     }
 
@@ -393,13 +394,6 @@ app.post('/login', async (req, res, next) => {
     req.session.userId = userData.id;
     req.session.justLoggedIn = true;
     req.session.role = 'user';
-
-    // Update last login interaction
-    await pool.query(`
-      UPDATE users 
-      SET lastLoginInteraction = NOW() 
-      WHERE id = ?
-    `, [userData.id]);
 
     await database.logActivity(
       userData.id,

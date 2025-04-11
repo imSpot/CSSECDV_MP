@@ -231,37 +231,16 @@ const database = {
         const connection = await pool.getConnection();
         await connection.beginTransaction();
         try {
-            // Modified query to include lastLoginInteraction update
             await connection.query(`
                 UPDATE users 
                 SET failedLoginAttempts = 0,
                     accountLockedUntil = NULL,
-                    lastLoginInteraction = NOW()  // Add this line
+                    lastLoginInteraction = NOW()
                 WHERE emailAddress = ?
             `, [emailAddress]);
             
             await connection.commit();
             connection.release();
-        } catch (err) {
-            await connection.rollback();
-            connection.release();
-            console.error('Error updating user:', err);
-            throw err;
-        }
-    },
-
-    resetFailedLoginAttempt: async (emailAddress) => {
-        const connection = await pool.getConnection();
-        await connection.beginTransaction();
-        try {
-            await connection.query(`
-                UPDATE users 
-                SET failedLoginAttempts = ?, accountLockedUntil = ?, lastLoginInteraction = NOW()
-                WHERE emailAddress = ?
-            `, [0, null, emailAddress]);
-            await connection.commit();
-            connection.release();
-
         } catch (err) {
             await connection.rollback();
             connection.release();
