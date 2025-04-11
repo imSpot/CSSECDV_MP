@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        if(!newPassword.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/)) {
+        if(!newPassword.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,60}$/)) {
             alert('New password needs at least one uppercase letter, one lowercase letter, one number, and one special character.');
             $.post('/log-activity', {
                 userId: '',
